@@ -1,39 +1,38 @@
 <template>
-  <nav class="sticky top-0 z-50 w-full text-white shadow-md bg-blue-600">
-    <div class="max-w-screen-xl mx-auto px-4 py-3 flex items-center justify-between">
-      <!-- Logo oder Titel -->
-      <div class="text-xl font-semibold h1">Fahrradspiel</div>
+  <nav class="bg-white sticky top-0 z-50 shadow-md w-full">
+    <div class="max-w-screen-xl mx-auto px-4 py-3 flex justify-between items-center">
+      <h1 class="text-regal-blue-900 text-xl md:text-2xl font-bold">Fahrradkarte</h1>
 
-      <!-- Navigation (kann später erweitert werden) -->
-      <div class="space-x-4 hidden md:flex">
-        <button class="hover:underline">Home</button>
-        <button class="hover:underline">Karte</button>
-        <button class="hover:underline">Profil</button>
-      </div>
-
-      <!-- Mobile Burger-Menu (optional) -->
-      <div class="md:hidden">
-        <button @click="toggleMenu" class="focus:outline-none">
-          <svg
-            class="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
+      <!-- Menü-Button immer sichtbar -->
+      <button @click="toggleMenu" class="text-regal-blue-900 text-3xl focus:outline-none">
+        <span v-if="!isOpen">&#9776;</span>
+        <!-- ☰ -->
+        <span v-else>&#10005;</span>
+        <!-- ✕ -->
+      </button>
     </div>
 
-    <!-- Mobile Dropdown -->
-    <div v-if="menuOpen" class="md:hidden bg-blue-700 px-4 pb-4">
-      <button class="block w-full text-left py-2 hover:underline">Home</button>
-      <button class="block w-full text-left py-2 hover:underline">Karte</button>
-      <button class="block w-full text-left py-2 hover:underline">Profil</button>
+    <!-- Burger-Menü für alle Viewports -->
+    <!-- Burger-Menü für alle Viewports -->
+    <div v-show="isOpen" class="bg-white shadow-md border-t border-regal-blue-100">
+      <div
+        class="max-w-screen-xl mx-auto px-4 py-2 flex flex-col space-y-2 text-lg text-regal-blue-900"
+      >
+        <router-link to="/" class="hover:underline" @click="closeMenu">Karte</router-link>
+        <router-link to="/about" class="hover:underline" @click="closeMenu"
+          >Über die Karte</router-link
+        >
+        <router-link to="/datenschutz" class="hover:underline" @click="closeMenu"
+          >Datenschutzerklärung</router-link
+        >
+        <a
+          href="https://www.big-lindenhof.de"
+          target="_blank"
+          class="hover:underline"
+          @click="closeMenu"
+          >BIG Lindenhof</a
+        >
+      </div>
     </div>
   </nav>
 </template>
@@ -41,8 +40,13 @@
 <script setup>
 import { ref } from 'vue'
 
-const menuOpen = ref(false)
+const isOpen = ref(false)
+
 const toggleMenu = () => {
-  menuOpen.value = !menuOpen.value
+  isOpen.value = !isOpen.value
+}
+
+const closeMenu = () => {
+  isOpen.value = false
 }
 </script>
