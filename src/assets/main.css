@@ -1,2 +1,6 @@
 @import './base.css';
 @import 'tailwindcss';
+
+.h1 {
+  color: red;
+}
