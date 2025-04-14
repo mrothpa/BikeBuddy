@@ -1,5 +1,7 @@
 <template>
-  <h1 class="text-3xl font-bold underline">Hello world!</h1>
+  <BikeMapVue />
 </template>
 
-<script setup></script>
+<script setup>
+import BikeMapVue from '@/components/BikeMap.vue'
+</script>
