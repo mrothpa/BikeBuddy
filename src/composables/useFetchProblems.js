@@ -1,9 +1,14 @@
+// src/composables/useFetchProblems.js
 import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useAppConfigStore } from '@/stores/appConfig' // Pfad anpassen!
 
 export default function useFetchProblems() {
   const problems = ref([])
   const error = ref(null)
   const loading = ref(false)
+  const appConfigStore = useAppConfigStore()
+  const { getBackendUrl } = storeToRefs(appConfigStore) // Für reaktiven Zugriff
 
   const fetchProblems = async () => {
     loading.value = true
@@ -11,7 +16,7 @@ export default function useFetchProblems() {
     error.value = null
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/problems')
+      const response = await fetch(getBackendUrl.value + 'problems')
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
