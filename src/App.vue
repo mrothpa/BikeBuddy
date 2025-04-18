@@ -1,8 +1,8 @@
 <template>
-  <div class="h-screen w-screen overflow-hidden flex flex-col">
+  <div class="h-screen w-screen flex flex-col">
     <Navbar />
     <main class="flex-grow relative">
-      <router-view></router-view>
+      <router-view />
     </main>
   </div>
 </template>
