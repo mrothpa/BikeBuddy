@@ -1,7 +1,11 @@
 <template>
   <nav class="bg-white sticky top-0 z-50 shadow-md w-full">
     <div class="max-w-screen-xl mx-auto px-4 py-3 flex justify-between items-center">
-      <h1 class="text-regal-blue-900 text-xl md:text-2xl font-bold">Fahrradkarte</h1>
+      <router-link to="/"
+        ><h1 class="text-regal-blue-900 text-xl md:text-2xl font-bold">
+          Fahrradkarte
+        </h1></router-link
+      >
 
       <!-- buttons -->
       <div class="flex items-center">
