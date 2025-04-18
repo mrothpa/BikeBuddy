@@ -6,6 +6,7 @@
       <!-- buttons -->
       <div class="flex items-center">
         <button
+          v-if="!isAuthenticated"
           @click="handleAuthentication"
           class="text-regal-blue-900 text-3xl focus:outline-none mr-4"
         >
@@ -38,17 +39,22 @@
           @click="closeMenu"
           >BIG Lindenhof</a
         >
+        <button class="text-left hover:underline" @click="handleLogout">Abmelden</button>
       </div>
     </div>
   </nav>
 </template>
 
 <script setup>
+import { useAppConfigStore } from '@/stores/appConfig'
+import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const isOpen = ref(false)
 const router = useRouter()
+const appConfigStore = useAppConfigStore()
+const { isAuthenticated } = storeToRefs(appConfigStore)
 
 const toggleMenu = () => {
   isOpen.value = !isOpen.value
@@ -60,5 +66,11 @@ const closeMenu = () => {
 
 const handleAuthentication = () => {
   router.push({ name: 'login' })
+}
+
+const handleLogout = () => {
+  appConfigStore.clearPasetoToken()
+  closeMenu()
+  router.push('/')
 }
 </script>
