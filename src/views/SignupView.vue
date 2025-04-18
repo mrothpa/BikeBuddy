@@ -34,13 +34,13 @@
             class="bg-regal-blue-900 hover:bg-regal-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-pointer"
             type="submit"
           >
-            Anmelden
+            Registrieren
           </button>
           <router-link
-            :to="{ name: 'signup' }"
+            :to="{ name: 'login' }"
             class="text-sm text-regal-blue-700 hover:text-regal-blue-900 focus:outline-none focus:shadow-outline"
           >
-            Registrieren
+            Anmelden
           </router-link>
         </div>
       </form>
@@ -55,7 +55,7 @@ const email = ref('')
 const password = ref('')
 
 const handleLogin = () => {
-  console.log('Anmelde-Button geklickt!', {
+  console.log('Registrieren-Button geklickt!', {
     email: email.value.trim(),
     password: password.value.trim(),
   })
