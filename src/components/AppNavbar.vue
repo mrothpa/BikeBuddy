@@ -59,6 +59,6 @@ const closeMenu = () => {
 }
 
 const handleAuthentication = () => {
-  router.push({ name: 'Login' })
+  router.push({ name: 'login' })
 }
 </script>
