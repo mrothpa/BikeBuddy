@@ -39,7 +39,9 @@
           @click="closeMenu"
           >BIG Lindenhof</a
         >
-        <button class="text-left hover:underline" @click="handleLogout">Abmelden</button>
+        <button v-if="isAuthenticated" class="text-left hover:underline" @click="handleLogout">
+          Abmelden
+        </button>
       </div>
     </div>
   </nav>
