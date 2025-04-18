@@ -40,7 +40,7 @@
             to="/signup"
             class="text-sm text-regal-blue-700 hover:text-regal-blue-900 focus:outline-none focus:shadow-outline"
           >
-            Noch kein Konto? Registrieren
+            Registrieren
           </router-link>
         </div>
       </form>

@@ -18,6 +18,8 @@ export default function useLogin() {
     loading.value = true
     error.value = null
 
+    console.log({ email: loginData.email, password: loginData.password })
+
     try {
       const response = await fetch(appConfigStore.getBackendUrl + 'login', {
         method: 'POST',
