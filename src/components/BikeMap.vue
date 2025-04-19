@@ -19,6 +19,12 @@
     >
       <font-awesome-icon :icon="isAddingProblem ? 'check' : 'plus'" size="lg" />
     </button>
+
+    <AddProblemModal
+      :marker="newProblemMarker"
+      :isOpen="isAddProblemModalOpen"
+      @close="handleCloseAddProblem"
+    />
   </div>
 </template>
 
@@ -30,6 +36,7 @@ import useFetchProblems from '@/composables/useFetchProblems' // Pfad anpassen!
 import ProblemDetailsModal from '@/components/ProblemDetailsModal.vue' // Pfad anpassen!
 import { useAppConfigStore } from '@/stores/appConfig'
 import { storeToRefs } from 'pinia'
+import AddProblemModal from '@/components/AddProblemModal.vue' // Pfad anpassen!
 
 const { problems, error, loading, fetchProblems } = useFetchProblems()
 const map = ref(null)
@@ -40,6 +47,7 @@ const isAddingProblem = ref(false)
 const newProblemLocation = ref(null)
 const problemMarkers = ref([])
 const newProblemMarker = ref(null) // Ref für den neuen Marker
+const isAddProblemModalOpen = ref(false)
 
 onMounted(async () => {
   await fetchProblems()
@@ -82,6 +90,7 @@ const addTileLayer = () => {
 const toggleAddProblem = () => {
   isAddingProblem.value = !isAddingProblem.value
   if (isAddingProblem.value) {
+    isAddProblemModalOpen.value = false
     // Standortabfrage und Zentrierung
     const centerMap = (lat, lng) => {
       newProblemLocation.value = { latitude: lat, longitude: lng }
@@ -112,14 +121,26 @@ const toggleAddProblem = () => {
     })
   } else {
     // Zeige die existierenden Marker wieder an und entferne den neuen Marker
-    problemMarkers.value.forEach((marker) => {
-      marker.addTo(map.value)
-    })
-    if (newProblemMarker.value) {
-      map.value.removeLayer(newProblemMarker.value)
-      newProblemMarker.value = null
-    }
+    // problemMarkers.value.forEach((marker) => { // in handleCloseAddProblem now
+    //   marker.addTo(map.value)
+    // })
+    // if (newProblemMarker.value) {
+    //   map.value.removeLayer(newProblemMarker.value)
+    //   newProblemMarker.value = null
+    // }
+    isAddProblemModalOpen.value = true
   }
+}
+
+const handleCloseAddProblem = () => {
+  problemMarkers.value.forEach((marker) => {
+    marker.addTo(map.value)
+  })
+  if (newProblemMarker.value) {
+    map.value.removeLayer(newProblemMarker.value)
+    newProblemMarker.value = null
+  }
+  isAddProblemModalOpen.value = false
 }
 </script>
 
