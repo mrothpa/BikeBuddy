@@ -9,6 +9,16 @@
       :problemId="selectedProblem"
       @close="selectedProblem = null"
     />
+
+    <button
+      v-if="isAuthenticated"
+      @click="toggleAddProblem"
+      class="fixed bottom-6 right-6 bg-regal-blue-900 text-white rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-regal-blue-500"
+      :class="{ 'animate-pulse': isAddingProblem }"
+      style="width: 56px; height: 56px; display: flex; justify-content: center; align-items: center"
+    >
+      <font-awesome-icon :icon="isAddingProblem ? 'check' : 'plus'" size="lg" />
+    </button>
   </div>
 </template>
 
@@ -18,10 +28,15 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import useFetchProblems from '@/composables/useFetchProblems' // Pfad anpassen!
 import ProblemDetailsModal from '@/components/ProblemDetailsModal.vue' // Pfad anpassen!
+import { useAppConfigStore } from '@/stores/appConfig'
+import { storeToRefs } from 'pinia'
 
 const { problems, error, loading, fetchProblems } = useFetchProblems()
 const map = ref(null)
 const selectedProblem = ref(null)
+const appConfigStore = useAppConfigStore()
+const { isAuthenticated } = storeToRefs(appConfigStore)
+const isAddingProblem = ref(false)
 
 onMounted(async () => {
   await fetchProblems()
@@ -53,6 +68,10 @@ onMounted(async () => {
     })
   })
 })
+
+const toggleAddProblem = () => {
+  isAddingProblem.value = !isAddingProblem.value
+}
 </script>
 
 <style scoped>
@@ -66,5 +85,19 @@ onMounted(async () => {
   color: blue;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.animate-pulse {
+  animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 </style>
