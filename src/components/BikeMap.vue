@@ -6,7 +6,7 @@
 
     <ProblemDetailsModal
       v-if="selectedProblem"
-      :problem="selectedProblem"
+      :problemId="selectedProblem"
       @close="selectedProblem = null"
     />
   </div>
@@ -47,7 +47,7 @@ onMounted(async () => {
       if (problemLink) {
         problemLink.addEventListener('click', (event) => {
           event.preventDefault()
-          selectedProblem.value = problem
+          selectedProblem.value = problem.id
         })
       }
     })
