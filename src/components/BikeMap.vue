@@ -38,7 +38,8 @@ const appConfigStore = useAppConfigStore()
 const { isAuthenticated, defaultMapCenter } = storeToRefs(appConfigStore)
 const isAddingProblem = ref(false)
 const newProblemLocation = ref(null)
-const problemMarkers = ref([]) // Ref für die gespeicherten Marker-Instanzen
+const problemMarkers = ref([])
+const newProblemMarker = ref(null) // Ref für den neuen Marker
 
 onMounted(async () => {
   await fetchProblems()
@@ -62,8 +63,7 @@ const addTileLayer = () => {
         `<b>${problem.title}</b> <a href="#" class="problem-link" data-problem-id="${problem.id}">Details anzeigen</a>`,
       )
       .addTo(map.value)
-    problemMarkers.value.push(marker) // Speichere die Marker-Instanz
-
+    problemMarkers.value.push(marker)
     marker.on('popupopened', (event) => {
       const popup = event.popup
       const problemLink = popup
@@ -82,39 +82,28 @@ const addTileLayer = () => {
 const toggleAddProblem = () => {
   isAddingProblem.value = !isAddingProblem.value
   if (isAddingProblem.value) {
-    // Standortabfrage nur beim Aktivieren des Add-Problem-Modus
+    // Standortabfrage und Zentrierung
+    const centerMap = (lat, lng) => {
+      newProblemLocation.value = { latitude: lat, longitude: lng }
+      map.value.setView([lat, lng], 13)
+      // Platziere den festen Marker
+      newProblemMarker.value = L.marker([lat, lng], { draggable: true }).addTo(map.value)
+    }
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          newProblemLocation.value = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          }
-          map.value.setView(
-            [newProblemLocation.value.latitude, newProblemLocation.value.longitude],
-            13,
-          )
+          centerMap(position.coords.latitude, position.coords.longitude)
           console.log('Standort abgerufen:', newProblemLocation.value)
         },
         () => {
-          newProblemLocation.value = {
-            latitude: defaultMapCenter.value.latitude,
-            longitude: defaultMapCenter.value.longitude,
-          }
-          map.value.setView(
-            [newProblemLocation.value.latitude, newProblemLocation.value.longitude],
-            13,
-          )
+          centerMap(defaultMapCenter.value.latitude, defaultMapCenter.value.longitude)
           console.log('Standortabfrage abgelehnt oder fehlgeschlagen.')
         },
         { enableHighAccuracy: false, timeout: 5000, maximumAge: 0 },
       )
     } else {
-      newProblemLocation.value = {
-        latitude: defaultMapCenter.value.latitude,
-        longitude: defaultMapCenter.value.longitude,
-      }
-      map.value.setView([newProblemLocation.value.latitude, newProblemLocation.value.longitude], 13)
+      centerMap(defaultMapCenter.value.latitude, defaultMapCenter.value.longitude)
       console.log('Geolocation wird von diesem Browser nicht unterstützt.')
     }
     // Verstecke die existierenden Marker
@@ -122,10 +111,14 @@ const toggleAddProblem = () => {
       map.value.removeLayer(marker)
     })
   } else {
-    // Zeige die existierenden Marker wieder an
+    // Zeige die existierenden Marker wieder an und entferne den neuen Marker
     problemMarkers.value.forEach((marker) => {
       marker.addTo(map.value)
     })
+    if (newProblemMarker.value) {
+      map.value.removeLayer(newProblemMarker.value)
+      newProblemMarker.value = null
+    }
   }
 }
 </script>
