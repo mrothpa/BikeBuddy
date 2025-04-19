@@ -5,9 +5,9 @@
     <div v-if="error">Fehler beim Laden der Daten: {{ error.message }}</div>
 
     <ProblemDetailsModal
-      v-if="selectedProblem"
-      :problemId="selectedProblem"
-      @close="selectedProblem = null"
+      v-if="selectedProblemId"
+      :problemId="selectedProblemId"
+      @close="selectedProblemId = null"
     />
 
     <button
@@ -33,19 +33,24 @@ import { storeToRefs } from 'pinia'
 
 const { problems, error, loading, fetchProblems } = useFetchProblems()
 const map = ref(null)
-const selectedProblem = ref(null)
+const selectedProblemId = ref(null)
 const appConfigStore = useAppConfigStore()
 const { isAuthenticated, defaultMapCenter } = storeToRefs(appConfigStore)
 const isAddingProblem = ref(false)
+const newProblemLocation = ref(null)
+const problemMarkers = ref([]) // Ref für die gespeicherten Marker-Instanzen
 
 onMounted(async () => {
   await fetchProblems()
+  initMap(defaultMapCenter.value.latitude, defaultMapCenter.value.longitude)
+})
 
-  map.value = L.map('bike-map').setView(
-    [defaultMapCenter.value.latitude, defaultMapCenter.value.longitude],
-    defaultMapCenter.value.zoom,
-  )
+const initMap = (latitude, longitude) => {
+  map.value = L.map('bike-map').setView([latitude, longitude], defaultMapCenter.value.zoom)
+  addTileLayer()
+}
 
+const addTileLayer = () => {
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution:
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -57,23 +62,71 @@ onMounted(async () => {
         `<b>${problem.title}</b> <a href="#" class="problem-link" data-problem-id="${problem.id}">Details anzeigen</a>`,
       )
       .addTo(map.value)
+    problemMarkers.value.push(marker) // Speichere die Marker-Instanz
 
-    marker.on('popupopen', () => {
-      const problemLink = document.querySelector(
-        `.leaflet-popup-content a[data-problem-id="${problem.id}"]`,
-      )
+    marker.on('popupopened', (event) => {
+      const popup = event.popup
+      const problemLink = popup
+        .getElement()
+        .querySelector(`.problem-link[data-problem-id="${problem.id}"]`)
       if (problemLink) {
-        problemLink.addEventListener('click', (event) => {
-          event.preventDefault()
-          selectedProblem.value = problem.id
+        problemLink.addEventListener('click', (e) => {
+          e.preventDefault()
+          selectedProblemId.value = problem.id
         })
       }
     })
   })
-})
+}
 
 const toggleAddProblem = () => {
   isAddingProblem.value = !isAddingProblem.value
+  if (isAddingProblem.value) {
+    // Standortabfrage nur beim Aktivieren des Add-Problem-Modus
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          newProblemLocation.value = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          }
+          map.value.setView(
+            [newProblemLocation.value.latitude, newProblemLocation.value.longitude],
+            13,
+          )
+          console.log('Standort abgerufen:', newProblemLocation.value)
+        },
+        () => {
+          newProblemLocation.value = {
+            latitude: defaultMapCenter.value.latitude,
+            longitude: defaultMapCenter.value.longitude,
+          }
+          map.value.setView(
+            [newProblemLocation.value.latitude, newProblemLocation.value.longitude],
+            13,
+          )
+          console.log('Standortabfrage abgelehnt oder fehlgeschlagen.')
+        },
+        { enableHighAccuracy: false, timeout: 5000, maximumAge: 0 },
+      )
+    } else {
+      newProblemLocation.value = {
+        latitude: defaultMapCenter.value.latitude,
+        longitude: defaultMapCenter.value.longitude,
+      }
+      map.value.setView([newProblemLocation.value.latitude, newProblemLocation.value.longitude], 13)
+      console.log('Geolocation wird von diesem Browser nicht unterstützt.')
+    }
+    // Verstecke die existierenden Marker
+    problemMarkers.value.forEach((marker) => {
+      map.value.removeLayer(marker)
+    })
+  } else {
+    // Zeige die existierenden Marker wieder an
+    problemMarkers.value.forEach((marker) => {
+      marker.addTo(map.value)
+    })
+  }
 }
 </script>
 
