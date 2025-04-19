@@ -35,13 +35,16 @@ const { problems, error, loading, fetchProblems } = useFetchProblems()
 const map = ref(null)
 const selectedProblem = ref(null)
 const appConfigStore = useAppConfigStore()
-const { isAuthenticated } = storeToRefs(appConfigStore)
+const { isAuthenticated, defaultMapCenter } = storeToRefs(appConfigStore)
 const isAddingProblem = ref(false)
 
 onMounted(async () => {
   await fetchProblems()
 
-  map.value = L.map('bike-map').setView([49.468, 8.475], 13)
+  map.value = L.map('bike-map').setView(
+    [defaultMapCenter.value.latitude, defaultMapCenter.value.longitude],
+    defaultMapCenter.value.zoom,
+  )
 
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution:
