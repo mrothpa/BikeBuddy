@@ -16,6 +16,7 @@
             placeholder="Kurze Beschreibung des Problems"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
+          <p v-if="titleError" class="text-red-500 text-xs italic">{{ titleError }}</p>
         </div>
 
         <div class="mb-4">
@@ -29,27 +30,30 @@
             rows="4"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           ></textarea>
+          <p v-if="descriptionError" class="text-red-500 text-xs italic">{{ descriptionError }}</p>
         </div>
 
         <div class="mb-4">
-          <label for="longitude" class="block text-gray-700 text-sm font-bold mb-2"
-            >Longitude</label
+          <label for="latitude" class="block text-gray-700 text-sm font-bold mb-2"
+            >Breitengrad</label
           >
           <input
             type="text"
-            id="longitude"
-            :value="longitude"
+            id="latitude"
+            :value="latitude"
             readonly
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
           />
         </div>
 
         <div class="mb-4">
-          <label for="latitude" class="block text-gray-700 text-sm font-bold mb-2">Latitude</label>
+          <label for="longitude" class="block text-gray-700 text-sm font-bold mb-2"
+            >Längengrad</label
+          >
           <input
             type="text"
-            id="latitude"
-            :value="latitude"
+            id="longitude"
+            :value="longitude"
             readonly
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
           />
@@ -135,6 +139,9 @@ const form = ref({
   longitude: props.marker ? props.marker.getLatLng().lng : null,
 })
 
+const titleError = ref('')
+const descriptionError = ref('')
+
 const latitude = ref(props.marker ? props.marker.getLatLng().lat : '')
 const longitude = ref(props.marker ? props.marker.getLatLng().lng : '')
 
@@ -172,6 +179,8 @@ watch(success, (isSuccess) => {
     form.value.title = ''
     form.value.description = ''
     form.value.category = ''
+    titleError.value = ''
+    descriptionError.value = ''
     newCategory.value = ''
     // Schließe das Modal
     emit('problem-added')
@@ -181,6 +190,8 @@ watch(success, (isSuccess) => {
 
 const closeModal = () => {
   emit('close')
+  titleError.value = ''
+  descriptionError.value = ''
 }
 
 const addCategory = () => {
@@ -191,15 +202,22 @@ const addCategory = () => {
   newCategory.value = ''
 }
 
+const validateForm = () => {
+  titleError.value = form.value.title ? '' : 'Titel ist erforderlich.'
+  descriptionError.value = form.value.description ? '' : 'Beschreibung ist erforderlich.'
+  return !titleError.value && !descriptionError.value
+}
+
 const submitForm = async () => {
   if (!props.marker) {
     error.value = 'Es wurde kein Standort auf der Karte ausgewählt.'
     return
   }
 
-  form.value.latitude = props.marker.getLatLng().lat
-  form.value.longitude = props.marker.getLatLng().lng
-
-  await addProblem(form.value)
+  if (validateForm()) {
+    form.value.latitude = props.marker.getLatLng().lat
+    form.value.longitude = props.marker.getLatLng().lng
+    await addProblem(form.value)
+  }
 }
 </script>
