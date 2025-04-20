@@ -77,12 +77,6 @@
               placeholder="Neue Kategorie eingeben"
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
-            <button
-              @click="addCategory"
-              class="bg-regal-blue-500 hover:bg-regal-blue-700 text-white font-bold py-2 px-4 rounded mt-2 focus:outline-none focus:shadow-outline"
-            >
-              Hinzufügen
-            </button>
           </div>
         </div>
 
@@ -152,7 +146,6 @@ const availableCategories = ref([
   'Fahrradweg blockiert',
   'Unklare Verkehrsführung',
   'Fehlendes Straßenschild',
-  'Sonstiges',
 ])
 const newCategory = ref('')
 
@@ -212,6 +205,12 @@ const submitForm = async () => {
   if (!props.marker) {
     error.value = 'Es wurde kein Standort auf der Karte ausgewählt.'
     return
+  }
+
+  console.log('form value category: ', form.value.category)
+
+  if (form.value.category === 'new') {
+    addCategory()
   }
 
   if (validateForm()) {
