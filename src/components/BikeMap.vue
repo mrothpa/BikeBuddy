@@ -24,6 +24,7 @@
       :marker="newProblemMarker"
       :isOpen="isAddProblemModalOpen"
       @close="handleCloseAddProblem"
+      @problem-added="handleProblemAdded"
     />
   </div>
 </template>
@@ -141,6 +142,10 @@ const handleCloseAddProblem = () => {
     newProblemMarker.value = null
   }
   isAddProblemModalOpen.value = false
+}
+
+const handleProblemAdded = async () => {
+  window.location.reload()
 }
 </script>
 

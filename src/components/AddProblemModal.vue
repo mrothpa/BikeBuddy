@@ -32,26 +32,24 @@
         </div>
 
         <div class="mb-4">
-          <label for="latitude" class="block text-gray-700 text-sm font-bold mb-2"
-            >Breitengrad</label
+          <label for="longitude" class="block text-gray-700 text-sm font-bold mb-2"
+            >Longitude</label
           >
           <input
             type="text"
-            id="latitude"
-            :value="marker.getLatLng().lat"
+            id="longitude"
+            :value="longitude"
             readonly
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
           />
         </div>
 
         <div class="mb-4">
-          <label for="longitude" class="block text-gray-700 text-sm font-bold mb-2"
-            >Längengrad</label
-          >
+          <label for="latitude" class="block text-gray-700 text-sm font-bold mb-2">Latitude</label>
           <input
             type="text"
-            id="longitude"
-            :value="marker.getLatLng().lng"
+            id="latitude"
+            :value="latitude"
             readonly
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
           />
@@ -88,16 +86,22 @@
           <button
             @click="closeModal"
             class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
+            :disabled="loading"
           >
             Abbrechen
           </button>
           <button
             @click="submitForm"
             class="bg-regal-blue-500 hover:bg-regal-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            :disabled="loading"
           >
-            Problem hinzufügen
+            <font-awesome-icon v-if="loading" icon="spinner" spin />
+            <span v-else>Problem hinzufügen</span>
           </button>
         </div>
+
+        <div v-if="error" class="text-red-500 mt-4">{{ error }}</div>
+        <div v-if="success" class="text-green-500 mt-4">Problem erfolgreich hinzugefügt!</div>
       </div>
       <div v-else class="text-gray-500">Kein Marker ausgewählt.</div>
     </div>
@@ -105,7 +109,8 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits } from 'vue'
+import { ref, defineProps, defineEmits, watch } from 'vue'
+import useAddProblem from '@/composables/useAddProblem' // Pfad anpassen!
 
 const props = defineProps({
   marker: {
@@ -118,15 +123,20 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'problem-added'])
+
+const { loading, error, success, addProblem } = useAddProblem()
 
 const form = ref({
   title: '',
   description: '',
-  longitude: props.marker ? props.marker.getLatLng().lng : '',
-  latitude: props.marker ? props.marker.getLatLng().lat : '',
   category: '',
+  latitude: props.marker ? props.marker.getLatLng().lat : null,
+  longitude: props.marker ? props.marker.getLatLng().lng : null,
 })
+
+const latitude = ref(props.marker ? props.marker.getLatLng().lat : '')
+const longitude = ref(props.marker ? props.marker.getLatLng().lng : '')
 
 const availableCategories = ref([
   'Schlagloch',
@@ -135,8 +145,39 @@ const availableCategories = ref([
   'Fahrradweg blockiert',
   'Unklare Verkehrsführung',
   'Fehlendes Straßenschild',
+  'Sonstiges',
 ])
 const newCategory = ref('')
+
+watch(
+  () => props.marker,
+  (newMarker) => {
+    if (newMarker) {
+      latitude.value = newMarker.getLatLng().lat
+      longitude.value = newMarker.getLatLng().lng
+      form.value.latitude = newMarker.getLatLng().lat
+      form.value.longitude = newMarker.getLatLng().lng
+    } else {
+      latitude.value = ''
+      longitude.value = ''
+      form.value.latitude = null
+      form.value.longitude = null
+    }
+  },
+)
+
+watch(success, (isSuccess) => {
+  if (isSuccess) {
+    // Setze Formularfelder zurück
+    form.value.title = ''
+    form.value.description = ''
+    form.value.category = ''
+    newCategory.value = ''
+    // Schließe das Modal
+    emit('problem-added')
+    closeModal()
+  }
+})
 
 const closeModal = () => {
   emit('close')
@@ -150,9 +191,15 @@ const addCategory = () => {
   newCategory.value = ''
 }
 
-const submitForm = () => {
-  // Hier kommt die Logik zum Absenden des Formulars
-  console.log('Formulardaten:', form.value)
-  closeModal() // Nur zum Testen, Modal schließen nach "Absenden"
+const submitForm = async () => {
+  if (!props.marker) {
+    error.value = 'Es wurde kein Standort auf der Karte ausgewählt.'
+    return
+  }
+
+  form.value.latitude = props.marker.getLatLng().lat
+  form.value.longitude = props.marker.getLatLng().lng
+
+  await addProblem(form.value)
 }
 </script>
