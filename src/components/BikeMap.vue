@@ -72,7 +72,7 @@ const addTileLayer = () => {
       )
       .addTo(map.value)
     problemMarkers.value.push(marker)
-    marker.on('popupopened', (event) => {
+    marker.on('popupopen', (event) => {
       const popup = event.popup
       const problemLink = popup
         .getElement()
@@ -80,7 +80,7 @@ const addTileLayer = () => {
       if (problemLink) {
         problemLink.addEventListener('click', (e) => {
           e.preventDefault()
-          selectedProblemId.value = problem.id
+          selectedProblemId.value = problem.id // Korrigierte Zeile
         })
       }
     })
@@ -121,7 +121,7 @@ const toggleAddProblem = () => {
     })
   } else {
     // Zeige die existierenden Marker wieder an und entferne den neuen Marker
-    // problemMarkers.value.forEach((marker) => { // in handleCloseAddProblem now
+    // problemMarkers.value.forEach((marker) => { // in handleCloseAddProblem
     //   marker.addTo(map.value)
     // })
     // if (newProblemMarker.value) {
