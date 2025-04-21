@@ -47,7 +47,12 @@
 
         <div class="flex justify-around">
           <button
-            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2 inline-flex items-center gap-2"
+            :class="[
+              'font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2 inline-flex items-center gap-2',
+              isUpvoted
+                ? 'bg-green-500 hover:bg-green-700 text-white'
+                : 'bg-gray-300 hover:bg-gray-400 text-gray-800',
+            ]"
           >
             Auch betroffen
             <font-awesome-icon icon="thumbs-up" />
@@ -75,8 +80,9 @@
 <script setup>
 // import { ref, onMounted } from 'vue'
 import useFetchProblemDetails from '@/composables/useFetchProblemDetails'
+import useCheckUpvoted from '@/composables/useCheckUpvoted'
 import AddSolutionModal from '@/components/AddSolutionModal.vue'
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 const props = defineProps(['problemId'])
 const emit = defineEmits(['close'])
@@ -93,6 +99,12 @@ const {
   fetchProblem, // Optional: Falls du die Daten später erneut abrufen möchtest
   fetchSolutions, // Optional: Falls du die Lösungen später erneut abrufen möchtest
 } = useFetchProblemDetails(props.problemId)
+
+const { isUpvoted, loading: upvoteLoading, error: upvoteError, checkUpvoted } = useCheckUpvoted()
+
+onMounted(async () => {
+  await checkUpvoted(props.problemId)
+})
 
 // Optional: Überwache Änderungen der problemId Prop, um die Daten neu zu laden
 watch(
