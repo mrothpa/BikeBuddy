@@ -1,6 +1,8 @@
+// src/composables/useAddSolution.js
 import { ref } from 'vue'
 import { useAppConfigStore } from '@/stores/appConfig'
 import { storeToRefs } from 'pinia'
+import { apiFetch } from '@/utils/api' // Importiere apiFetch
 
 export default function useAddSolution() {
   const appConfigStore = useAppConfigStore()
@@ -16,7 +18,7 @@ export default function useAddSolution() {
     success.value = false
 
     try {
-      const response = await fetch(`${appConfigStore.getBackendUrl}solutions`, {
+      const responseData = await apiFetch(`${appConfigStore.getBackendUrl}solutions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -25,12 +27,6 @@ export default function useAddSolution() {
         body: JSON.stringify(solutionData),
       })
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.message || `Fehler beim Erstellen der Lösung: ${response.status}`)
-      }
-
-      const responseData = await response.json()
       success.value = true
       return responseData // Optional: Gib die Antwortdaten zurück
     } catch (err) {

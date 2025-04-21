@@ -30,7 +30,7 @@
         <div class="flex items-center justify-between">
           <button
             :disabled="loading"
-            @click="login"
+            @click="handleLogin"
             class="bg-regal-blue-900 hover:bg-regal-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline cursor-pointer"
             type="submit"
           >
@@ -45,6 +45,7 @@
         </div>
       </form>
       <div v-if="error" class="text-red-500 text-sm mt-4">{{ error }}</div>
+      <div v-if="errorMessage !== ''" class="text-red-500 text-sm mt-4">{{ errorMessage }}</div>
       <div v-if="loading" class="text-gray-500 text-sm mt-4">Anmeldung läuft...</div>
     </div>
   </div>
@@ -52,6 +53,23 @@
 
 <script setup>
 import useLogin from '@/composables/useLogin'
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const errorMessage = ref('')
+
+onMounted(() => {
+  console.log('LoginPage mounted ', route.query)
+  if (route.query.sessionExpired) {
+    errorMessage.value = 'Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.'
+  }
+})
 
 const { loginData, error, loading, login } = useLogin()
+
+const handleLogin = async () => {
+  errorMessage.value = ''
+  await login()
+}
 </script>

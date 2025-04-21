@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useAppConfigStore } from '@/stores/appConfig'
 import { storeToRefs } from 'pinia'
+import { apiFetch } from '@/utils/api' // Importiere apiFetch
 
 export default function useAddProblem() {
   const appConfigStore = useAppConfigStore()
@@ -17,7 +18,7 @@ export default function useAddProblem() {
     success.value = false
 
     try {
-      const response = await fetch(`${appConfigStore.getBackendUrl}problems`, {
+      const responseData = await apiFetch(`${appConfigStore.getBackendUrl}problems`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -26,20 +27,12 @@ export default function useAddProblem() {
         body: JSON.stringify(problemData),
       })
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(
-          errorData.message || `Fehler beim Hinzufügen des Problems: ${response.status}`,
-        )
-      }
-
-      const responseData = await response.json()
       success.value = true
-      return responseData // Optional: Gib die Antwortdaten zurück
+      return responseData
     } catch (err) {
       error.value = err.message
       console.error('Fehler beim Hinzufügen des Problems:', err)
-      return null // Bei Fehler null zurückgeben
+      return null
     } finally {
       loading.value = false
     }

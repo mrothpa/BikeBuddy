@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useAppConfigStore } from '@/stores/appConfig'
 import { storeToRefs } from 'pinia'
+import { apiFetch } from '@/utils/api' // Importiere apiFetch
 
 export default function useUpvoteProblem() {
   const appConfigStore = useAppConfigStore()
@@ -22,18 +23,13 @@ export default function useUpvoteProblem() {
     successUpvote.value = false
 
     try {
-      const response = await fetch(`${appConfigStore.getBackendUrl}problems/${problemId}/upvote`, {
+      await apiFetch(`${appConfigStore.getBackendUrl}problems/${problemId}/upvote`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${pasetoToken.value}`,
         },
       })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.message || `Fehler beim Upvoten des Problems: ${response.status}`)
-      }
 
       successUpvote.value = true
       return true
@@ -57,23 +53,13 @@ export default function useUpvoteProblem() {
     successUpvote.value = false
 
     try {
-      const response = await fetch(
-        `${appConfigStore.getBackendUrl}problems/${problemId}/downvote`,
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${pasetoToken.value}`,
-          },
+      await apiFetch(`${appConfigStore.getBackendUrl}problems/${problemId}/downvote`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${pasetoToken.value}`,
         },
-      )
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(
-          errorData.message || `Fehler beim Entfernen des Upvotes: ${response.status}`,
-        )
-      }
+      })
 
       successUpvote.value = true
       return true

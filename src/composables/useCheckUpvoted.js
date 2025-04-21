@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useAppConfigStore } from '@/stores/appConfig'
 import { storeToRefs } from 'pinia'
+import { apiFetch } from '@/utils/api' // Importiere apiFetch
 
 export default function useCheckUpvoted() {
   const appConfigStore = useAppConfigStore()
@@ -21,22 +22,17 @@ export default function useCheckUpvoted() {
     error.value = null
 
     try {
-      const response = await fetch(`${appConfigStore.getBackendUrl}problems/${problemId}/upvoted`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${pasetoToken.value}`,
+      const responseData = await apiFetch(
+        `${appConfigStore.getBackendUrl}problems/${problemId}/upvoted`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${pasetoToken.value}`,
+          },
         },
-      })
+      )
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(
-          errorData.message || `Fehler beim Überprüfen des Upvote-Status: ${response.status}`,
-        )
-      }
-
-      const responseData = await response.json()
-      isUpvoted.value = responseData.upvoted
+      isUpvoted.value = responseData ? responseData.upvoted : false // Behandle den Fall, dass apiFetch null zurückgibt
     } catch (err) {
       error.value = err.message
       console.error('Fehler beim Überprüfen des Upvote-Status:', err)
