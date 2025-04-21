@@ -53,6 +53,7 @@
                 ? 'bg-green-500 hover:bg-green-700 text-white'
                 : 'bg-gray-300 hover:bg-gray-400 text-gray-800',
             ]"
+            @click="handleUpvote"
           >
             Auch betroffen
             <font-awesome-icon icon="thumbs-up" />
@@ -63,6 +64,12 @@
           >
             <span>Lösung vorschlagen</span>
           </button>
+        </div>
+        <div>
+          <div v-if="upvoteLoading" class="text-gray-500 mt-4">Lädt...</div>
+          <div v-if="loadingUpvote" class="text-gray-500 mt-4">Server-Anfrage lädt...</div>
+          <div v-if="upvoteError" class="text-red-500 mt-4">Fehler beim Laden der Daten.</div>
+          <div v-if="errorUpvote" class="text-red-500 mt-4">Aktion gescheitert.</div>
         </div>
       </div>
       <div v-else class="text-gray-500 mt-8">Problem-Details konnten nicht geladen werden.</div>
@@ -81,6 +88,7 @@
 // import { ref, onMounted } from 'vue'
 import useFetchProblemDetails from '@/composables/useFetchProblemDetails'
 import useCheckUpvoted from '@/composables/useCheckUpvoted'
+import useUpvoteProblem from '@/composables/useUpvoteProblem'
 import AddSolutionModal from '@/components/AddSolutionModal.vue'
 import { onMounted, ref, watch } from 'vue'
 
@@ -101,6 +109,8 @@ const {
 } = useFetchProblemDetails(props.problemId)
 
 const { isUpvoted, loading: upvoteLoading, error: upvoteError, checkUpvoted } = useCheckUpvoted()
+const { loadingUpvote, errorUpvote, succesUpvote, upvoteProblem, downvoteProblem } =
+  useUpvoteProblem()
 
 onMounted(async () => {
   await checkUpvoted(props.problemId)
@@ -129,5 +139,19 @@ const handleSolutionAddClick = () => {
 const handleSolutionModalClose = async () => {
   solutionModalIsOpen.value = false
   await fetchSolutions(props.problemId)
+}
+
+const handleUpvote = async () => {
+  if (!isUpvoted.value) {
+    const success = await upvoteProblem(props.problemId)
+    if (success) {
+      await checkUpvoted(props.problemId)
+    }
+  } else {
+    const success = await downvoteProblem(props.problemId)
+    if (success) {
+      await checkUpvoted(props.problemId)
+    }
+  }
 }
 </script>
