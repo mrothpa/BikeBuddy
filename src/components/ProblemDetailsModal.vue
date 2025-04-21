@@ -57,6 +57,9 @@
           >
             Auch betroffen
             <font-awesome-icon icon="thumbs-up" />
+            <span v-if="!error && problemDetails.upvotes_int > 0" class="ml-1"
+              >({{ problemDetails.upvotes_int }})</span
+            >
           </button>
           <button
             class="bg-regal-blue-500 hover:bg-regal-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -145,12 +148,14 @@ const handleUpvote = async () => {
   if (!isUpvoted.value) {
     const success = await upvoteProblem(props.problemId)
     if (success) {
-      await checkUpvoted(props.problemId)
+      isUpvoted.value = !isUpvoted.value
+      problemDetails.value.upvotes_int = problemDetails.value.upvotes_int + 1
     }
   } else {
     const success = await downvoteProblem(props.problemId)
     if (success) {
-      await checkUpvoted(props.problemId)
+      isUpvoted.value = !isUpvoted.value
+      problemDetails.value.upvotes_int = problemDetails.value.upvotes_int - 1
     }
   }
 }
