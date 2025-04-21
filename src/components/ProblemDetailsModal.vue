@@ -44,18 +44,43 @@
             <div v-else class="text-gray-500">Bisher keine Lösungen vorhanden.</div>
           </div>
         </div>
+
+        <div class="flex justify-around">
+          <button
+            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2 inline-flex items-center gap-2"
+          >
+            Auch betroffen
+            <font-awesome-icon icon="thumbs-up" />
+          </button>
+          <button
+            class="bg-regal-blue-500 hover:bg-regal-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            @click="handleSolutionAddClick"
+          >
+            <span>Lösung vorschlagen</span>
+          </button>
+        </div>
       </div>
       <div v-else class="text-gray-500 mt-8">Problem-Details konnten nicht geladen werden.</div>
     </div>
   </div>
+
+  <AddSolutionModal
+    v-if="solutionModalIsOpen"
+    :isOpen="solutionModalIsOpen"
+    @close="solutionModalIsOpen = false"
+  />
 </template>
 
 <script setup>
 // import { ref, onMounted } from 'vue'
-import useFetchProblemDetails from '@/composables/useFetchProblemDetails' // Pfad anpassen!
+import useFetchProblemDetails from '@/composables/useFetchProblemDetails'
+import AddSolutionModal from '@/components/AddSolutionModal.vue'
+import { ref } from 'vue'
 
 const props = defineProps(['problemId'])
 const emit = defineEmits(['close'])
+
+const solutionModalIsOpen = ref(false)
 
 // Verwende das Composable, um die Daten abzurufen
 const {
@@ -79,5 +104,10 @@ const {
 // Funktion zum Schließen des Modals
 const closeModal = () => {
   emit('close')
+}
+
+const handleSolutionAddClick = () => {
+  solutionModalIsOpen.value = true
+  console.log('Button pressed!!!')
 }
 </script>
