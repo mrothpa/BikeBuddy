@@ -45,8 +45,9 @@
           </div>
         </div>
 
-        <div class="flex justify-around">
+        <div v-if="isAuthenticated" class="flex justify-around">
           <button
+            v-if="isAuthenticated"
             :class="[
               'font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2 inline-flex items-center gap-2',
               isUpvoted
@@ -62,6 +63,7 @@
             >
           </button>
           <button
+            v-if="isAuthenticated"
             class="bg-regal-blue-500 hover:bg-regal-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             @click="handleSolutionAddClick"
           >
@@ -94,6 +96,11 @@ import useCheckUpvoted from '@/composables/useCheckUpvoted'
 import useUpvoteProblem from '@/composables/useUpvoteProblem'
 import AddSolutionModal from '@/components/AddSolutionModal.vue'
 import { onMounted, ref, watch } from 'vue'
+import { useAppConfigStore } from '@/stores/appConfig'
+import { storeToRefs } from 'pinia'
+
+const appConfigStore = useAppConfigStore()
+const { isAuthenticated } = storeToRefs(appConfigStore)
 
 const props = defineProps(['problemId'])
 const emit = defineEmits(['close'])
@@ -116,7 +123,9 @@ const { loadingUpvote, errorUpvote, succesUpvote, upvoteProblem, downvoteProblem
   useUpvoteProblem()
 
 onMounted(async () => {
-  await checkUpvoted(props.problemId)
+  if (isAuthenticated.value) {
+    await checkUpvoted(props.problemId)
+  }
 })
 
 // Optional: Überwache Änderungen der problemId Prop, um die Daten neu zu laden
