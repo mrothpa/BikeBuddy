@@ -67,7 +67,8 @@
   <AddSolutionModal
     v-if="solutionModalIsOpen"
     :isOpen="solutionModalIsOpen"
-    @close="solutionModalIsOpen = false"
+    :problemId="props.problemId"
+    @close="handleSolutionModalClose"
   />
 </template>
 
@@ -75,7 +76,7 @@
 // import { ref, onMounted } from 'vue'
 import useFetchProblemDetails from '@/composables/useFetchProblemDetails'
 import AddSolutionModal from '@/components/AddSolutionModal.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const props = defineProps(['problemId'])
 const emit = defineEmits(['close'])
@@ -89,17 +90,20 @@ const {
   error,
   loadingProblem,
   loadingSolutions,
-  // fetchProblem, // Optional: Falls du die Daten später erneut abrufen möchtest
-  // fetchSolutions, // Optional: Falls du die Lösungen später erneut abrufen möchtest
+  fetchProblem, // Optional: Falls du die Daten später erneut abrufen möchtest
+  fetchSolutions, // Optional: Falls du die Lösungen später erneut abrufen möchtest
 } = useFetchProblemDetails(props.problemId)
 
 // Optional: Überwache Änderungen der problemId Prop, um die Daten neu zu laden
-// watch(() => props.problemId, (newProblemId) => {
-//   if (newProblemId) {
-//     fetchProblem(newProblemId);
-//     fetchSolutions(newProblemId);
-//   }
-// });
+watch(
+  () => props.problemId,
+  (newProblemId) => {
+    if (newProblemId) {
+      fetchProblem(newProblemId)
+      fetchSolutions(newProblemId)
+    }
+  },
+)
 
 // Funktion zum Schließen des Modals
 const closeModal = () => {
@@ -108,6 +112,10 @@ const closeModal = () => {
 
 const handleSolutionAddClick = () => {
   solutionModalIsOpen.value = true
-  console.log('Button pressed!!!')
+}
+
+const handleSolutionModalClose = async () => {
+  solutionModalIsOpen.value = false
+  await fetchSolutions(props.problemId)
 }
 </script>
