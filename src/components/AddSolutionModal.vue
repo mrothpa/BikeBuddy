@@ -62,7 +62,7 @@ const form = ref({
 })
 
 const submitForm = async () => {
-  if (form.value.description) {
+  if (form.value.description && form.value.description.length < 65536) {
     const solutionData = {
       problem: props.problemId,
       description: form.value.description,
@@ -73,6 +73,8 @@ const submitForm = async () => {
       emit('solution-added') // Optional: Event auslösen, um die UI zu aktualisieren
       emit('close')
     }
+  } else if (form.value.description.length >= 65536) {
+    error.value = 'Lösung zu lang. Maximal 65536 Zeichen.'
   } else {
     error.value = 'Bitte gib eine Lösungsidee ein.'
   }

@@ -4,11 +4,11 @@
       <button @click="closeModal" class="absolute top-3 right-3 text-gray-500 hover:text-black">
         <font-awesome-icon icon="times" />
       </button>
-      <h2 class="text-xl font-bold mb-4 text-regal-blue-900">Neues Problem hinzufügen</h2>
+      <h2 class="text-xl font-bold mb-4 text-regal-blue-900">Neues Problem melden</h2>
 
       <div v-if="marker">
         <div class="mb-4">
-          <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Titel</label>
+          <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Titel (*)</label>
           <input
             type="text"
             id="title"
@@ -21,7 +21,7 @@
 
         <div class="mb-4">
           <label for="description" class="block text-gray-700 text-sm font-bold mb-2"
-            >Beschreibung</label
+            >Beschreibung (*)</label
           >
           <textarea
             id="description"
@@ -34,6 +34,29 @@
         </div>
 
         <div class="mb-4">
+          <label for="category" class="block text-gray-700 text-sm font-bold mb-2"
+            >Kategorie (*)</label
+          >
+          <select
+            id="category"
+            v-model="form.category"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          >
+            <option value="" disabled>Kategorie auswählen</option>
+            <option v-for="cat in availableCategories" :key="cat" :value="cat">{{ cat }}</option>
+            <option value="new">Eigene hinzufügen...</option>
+          </select>
+          <div v-if="form.category === 'new'" class="mt-2">
+            <input
+              type="text"
+              v-model="newCategory"
+              placeholder="Neue Kategorie eingeben"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+        </div>
+
+        <!-- <div class="mb-4">
           <label for="latitude" class="block text-gray-700 text-sm font-bold mb-2"
             >Breitengrad</label
           >
@@ -57,28 +80,7 @@
             readonly
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
           />
-        </div>
-
-        <div class="mb-4">
-          <label for="category" class="block text-gray-700 text-sm font-bold mb-2">Kategorie</label>
-          <select
-            id="category"
-            v-model="form.category"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          >
-            <option value="" disabled>Kategorie auswählen</option>
-            <option v-for="cat in availableCategories" :key="cat" :value="cat">{{ cat }}</option>
-            <option value="new">Eigene hinzufügen...</option>
-          </select>
-          <div v-if="form.category === 'new'" class="mt-2">
-            <input
-              type="text"
-              v-model="newCategory"
-              placeholder="Neue Kategorie eingeben"
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-        </div>
+        </div> -->
 
         <div class="flex justify-end">
           <button
@@ -94,12 +96,12 @@
             :disabled="loading"
           >
             <font-awesome-icon v-if="loading" icon="spinner" spin />
-            <span v-else>Problem hinzufügen</span>
+            <span v-else>Problem melden</span>
           </button>
         </div>
 
         <div v-if="error" class="text-red-500 mt-4">{{ error }}</div>
-        <div v-if="success" class="text-green-500 mt-4">Problem erfolgreich hinzugefügt!</div>
+        <div v-if="success" class="text-green-500 mt-4">Problem erfolgreich gemeldet!</div>
       </div>
       <div v-else class="text-gray-500">Kein Marker ausgewählt.</div>
     </div>
@@ -188,7 +190,11 @@ const closeModal = () => {
 }
 
 const addCategory = () => {
-  if (newCategory.value && !availableCategories.value.includes(newCategory.value)) {
+  if (
+    newCategory.value &&
+    !availableCategories.value.includes(newCategory.value) &&
+    newCategory.value.length < 64
+  ) {
     availableCategories.value.push(newCategory.value)
   }
   form.value.category = newCategory.value
@@ -198,6 +204,8 @@ const addCategory = () => {
 const validateForm = () => {
   titleError.value = form.value.title ? '' : 'Titel ist erforderlich.'
   descriptionError.value = form.value.description ? '' : 'Beschreibung ist erforderlich.'
+  titleError.value = form.value.title.length < 64 ? '' : 'Titel zu lang.'
+  descriptionError.value = form.value.description.length < 65536 ? '' : 'Beschreibung zu lang.'
   return !titleError.value && !descriptionError.value
 }
 

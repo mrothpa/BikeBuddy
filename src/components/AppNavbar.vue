@@ -3,7 +3,7 @@
     <div class="max-w-screen-xl mx-auto px-4 py-3 flex justify-between items-center">
       <router-link to="/"
         ><h1 class="text-regal-blue-900 text-xl md:text-2xl font-bold">
-          Fahrradkarte
+          BikeBuddy BiG Lindenhof
         </h1></router-link
       >
 
