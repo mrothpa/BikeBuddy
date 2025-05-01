@@ -10,9 +10,12 @@
         <thead class="bg-gray-100">
           <tr>
             <th
-              class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+              class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
+              @click="sortProblems('title')"
             >
               Titel
+              <span v-if="sortColumn === 'title'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+              <font-awesome-icon v-else :icon="['fas', 'sort']" />
             </th>
             <th
               class="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
@@ -20,28 +23,41 @@
               Koordinaten
             </th>
             <th
-              class="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
+              class="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
+              @click="sortProblems('category')"
             >
               Kategorie
+              <span v-if="sortColumn === 'category'">{{
+                sortDirection === 'asc' ? '▲' : '▼'
+              }}</span>
+              <font-awesome-icon v-else :icon="['fas', 'sort']" />
             </th>
             <th
-              class="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
+              class="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
+              @click="sortProblems('status')"
             >
               Status
+              <span v-if="sortColumn === 'status'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+              <font-awesome-icon v-else :icon="['fas', 'sort']" />
             </th>
             <th
-              class="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider"
+              class="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
+              @click="sortProblems('created_at')"
             >
               Erstellt am
+              <span v-if="sortColumn === 'created_at'">{{
+                sortDirection === 'asc' ? '▲' : '▼'
+              }}</span>
+              <font-awesome-icon v-else :icon="['fas', 'sort']" />
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="problem in problems" :key="problem.id">
+          <tr v-for="problem in sortedProblems" :key="problem.id">
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
               <button
                 @click="openProblemDetails(problem.id)"
-                class="text-regal-blue-500 hover:text-regal-blue-700 font-semibold cursor-pointer hover:underline"
+                class="text-regal-blue-500 hover:text-regal-blue-700 font-semibold"
               >
                 {{ problem.title }}
               </button>
@@ -75,13 +91,15 @@
 
 <script setup>
 import useFetchProblems from '@/composables/useFetchProblems'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import ProblemDetails from '@/components/ProblemDetailsModal.vue' // Pfad anpassen!
 
 const { problems, error, loading, fetchProblems } = useFetchProblems()
 
 const showDetails = ref(false)
 const selectedProblemId = ref(null)
+const sortColumn = ref(null)
+const sortDirection = ref('asc')
 
 onMounted(async () => {
   fetchProblems()
@@ -105,8 +123,41 @@ const closeProblemDetails = () => {
   selectedProblemId.value = null
   showDetails.value = false
 }
+
+const sortProblems = (column) => {
+  if (sortColumn.value === column) {
+    sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
+  } else {
+    sortColumn.value = column
+    sortDirection.value = 'asc'
+  }
+}
+
+const sortedProblems = computed(() => {
+  if (!sortColumn.value) {
+    return [...problems.value] // Gib eine Kopie des ursprünglichen Arrays zurück
+  }
+
+  return [...problems.value].sort((a, b) => {
+    const aValue = a[sortColumn.value]
+    const bValue = b[sortColumn.value]
+
+    let comparison = 0
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      comparison = aValue.localeCompare(bValue)
+    } else if (aValue > bValue) {
+      comparison = 1
+    } else if (aValue < bValue) {
+      comparison = -1
+    }
+
+    return sortDirection.value === 'asc' ? comparison : comparison * -1
+  })
+})
 </script>
 
 <style scoped>
-/* Optional: Füge hier spezifische Stile hinzu, falls nötig */
+.cursor-pointer {
+  cursor: pointer;
+}
 </style>

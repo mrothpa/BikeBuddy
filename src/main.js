@@ -16,10 +16,25 @@ import {
   faPlus,
   faSpinner,
   faThumbsUp,
+  faSort,
+  faSortUp,
+  faSortDown,
 } from '@fortawesome/free-solid-svg-icons'
 import { faVuejs } from '@fortawesome/free-brands-svg-icons'
 
-library.add(faUser, faBars, faTimes, faCheck, faPlus, faSpinner, faThumbsUp, faVuejs)
+library.add(
+  faUser,
+  faBars,
+  faTimes,
+  faCheck,
+  faPlus,
+  faSpinner,
+  faThumbsUp,
+  faVuejs,
+  faSort,
+  faSortUp,
+  faSortDown,
+)
 
 const app = createApp(App)
 app.component('font-awesome-icon', FontAwesomeIcon)
