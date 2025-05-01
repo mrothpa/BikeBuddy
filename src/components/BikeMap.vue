@@ -65,6 +65,7 @@ const isAddProblemModalOpen = ref(false)
 
 onMounted(async () => {
   await fetchProblems()
+  console.log('Problems: ', problems.value)
   initMap(defaultMapCenter.value.latitude, defaultMapCenter.value.longitude)
 })
 

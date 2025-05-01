@@ -37,7 +37,9 @@ export default function useLogin() {
       }
 
       const data = await response.json()
+      // console.log('Login-Data: ', data)
       appConfigStore.setPasetoToken(data.token)
+      appConfigStore.setUserRole(data.role)
       await router.push('/') // Weiterleitung zur Homepage
     } catch (e) {
       error.value = e.message || 'Ein unbekannter Fehler ist aufgetreten.'

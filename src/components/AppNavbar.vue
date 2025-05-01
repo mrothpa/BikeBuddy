@@ -76,6 +76,7 @@ const handleAuthentication = () => {
 
 const handleLogout = () => {
   appConfigStore.clearPasetoToken()
+  appConfigStore.setUserRole(null)
   closeMenu()
   router.push('/')
 }
