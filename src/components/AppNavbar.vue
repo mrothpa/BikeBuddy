@@ -29,7 +29,12 @@
       <div
         class="max-w-screen-xl mx-auto px-4 py-2 flex flex-col space-y-2 text-lg text-regal-blue-900"
       >
-        <router-link to="/" class="hover:underline" @click="closeMenu">Karte</router-link>
+        <router-link to="/" class="hover:underline" @click="handleShowMap" v-if="showMap"
+          >Listenansicht</router-link
+        >
+        <router-link to="/" class="hover:underline" @click="handleShowMap" v-else
+          >Kartenansicht</router-link
+        >
         <router-link to="/about" class="hover:underline" @click="closeMenu"
           >Über die Karte</router-link
         >
@@ -60,7 +65,7 @@ import { useRouter } from 'vue-router'
 const isOpen = ref(false)
 const router = useRouter()
 const appConfigStore = useAppConfigStore()
-const { isAuthenticated } = storeToRefs(appConfigStore)
+const { isAuthenticated, showMap } = storeToRefs(appConfigStore)
 
 const toggleMenu = () => {
   isOpen.value = !isOpen.value
@@ -79,5 +84,11 @@ const handleLogout = () => {
   appConfigStore.setUserRole(null)
   closeMenu()
   router.push('/')
+}
+
+const handleShowMap = () => {
+  appConfigStore.setShowMap()
+  showMap.value = appConfigStore.getShowMap
+  closeMenu()
 }
 </script>

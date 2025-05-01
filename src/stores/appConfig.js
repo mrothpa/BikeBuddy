@@ -12,6 +12,7 @@ export const useAppConfigStore = defineStore('appConfig', {
       zoom: 13,
     },
     user_role: null,
+    showMap: true,
   }),
   getters: {
     getBackendUrl: (state) => state.backendUrl,
@@ -19,6 +20,7 @@ export const useAppConfigStore = defineStore('appConfig', {
     getPasetoToken: (state) => state.pasetoToken,
     getDefaultMapCenter: (state) => state.defaultMapCenter,
     getUserRole: (state) => state.user_role,
+    getShowMap: (state) => state.showMap,
   },
   actions: {
     setBackendUrl(newUrl) {
@@ -34,6 +36,9 @@ export const useAppConfigStore = defineStore('appConfig', {
     },
     setUserRole(new_role) {
       this.user_role = new_role
+    },
+    setShowMap() {
+      this.showMap = !this.showMap
     },
   },
 })
