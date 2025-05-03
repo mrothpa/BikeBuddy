@@ -68,12 +68,12 @@ const newProblemMarker = ref(null) // Ref für den neuen Marker
 const isAddProblemModalOpen = ref(false)
 
 onMounted(async () => {
-  await fetchProblems()
-  // console.log('Problems: ', problems.value)
-  initMap(defaultMapCenter.value.latitude, defaultMapCenter.value.longitude)
   if (!showInfoTextAtStart.value || showInfoTextAtStart.value === 'false') {
     showInfoText.value = false
   }
+  await fetchProblems()
+  // console.log('Problems: ', problems.value)
+  initMap(defaultMapCenter.value.latitude, defaultMapCenter.value.longitude)
 })
 
 const initMap = (latitude, longitude) => {

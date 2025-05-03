@@ -81,6 +81,25 @@
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
           />
         </div> -->
+        <div>
+          <label for="solution" class="block text-gray-700 text-sm font-bold mb-2"
+            >Lösungsidee</label
+          >
+          <textarea
+            id="solution"
+            v-model="formSolution.description"
+            placeholder="Detailliertere Lösungsidee des Problems"
+            rows="4"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          ></textarea>
+          <p v-if="errorSolution" class="text-red-500 text-xs italic">{{ errorSolution }}</p>
+          <p v-if="successSolution" class="text-green-500 text-xs">
+            Lösung erfolgreich eingereicht!
+          </p>
+          <p v-if="loadingSolution" class="text-gray-500 text-xs italic">
+            Lösung wird eingereicht...
+          </p>
+        </div>
 
         <div class="flex justify-end">
           <button
@@ -111,6 +130,7 @@
 <script setup>
 import { ref, defineProps, defineEmits, watch } from 'vue'
 import useAddProblem from '@/composables/useAddProblem' // Pfad anpassen!
+import useAddSolution from '@/composables/useAddSolution'
 
 const props = defineProps({
   marker: {
@@ -126,6 +146,7 @@ const props = defineProps({
 const emit = defineEmits(['close', 'problem-added'])
 
 const { loading, error, success, addProblem } = useAddProblem()
+const { loadingSolution, errorSolution, successSolution, addSolution } = useAddSolution()
 
 const form = ref({
   title: '',
@@ -133,6 +154,10 @@ const form = ref({
   category: '',
   latitude: props.marker ? props.marker.getLatLng().lat : null,
   longitude: props.marker ? props.marker.getLatLng().lng : null,
+})
+
+const formSolution = ref({
+  description: '',
 })
 
 const titleError = ref('')
@@ -210,6 +235,7 @@ const validateForm = () => {
 }
 
 const submitForm = async () => {
+  const responseData = ref([])
   if (!props.marker) {
     error.value = 'Es wurde kein Standort auf der Karte ausgewählt.'
     return
@@ -224,7 +250,21 @@ const submitForm = async () => {
   if (validateForm()) {
     form.value.latitude = props.marker.getLatLng().lat
     form.value.longitude = props.marker.getLatLng().lng
-    await addProblem(form.value)
+    responseData.value = await addProblem(form.value)
+    // console.log(responseData)
+  }
+
+  if (formSolution.value.description && formSolution.value.description.length < 65536) {
+    const solutionData = {
+      problem: responseData.value.id,
+      description: formSolution.value.description,
+    }
+    const result = await addSolution(solutionData)
+    if (result && success.value) {
+      formSolution.value.description = '' // Formular zurücksetzen
+    }
+  } else if (form.value.solution.length >= 65536) {
+    errorSolution.value = 'Lösung zu lang. Maximal 65536 Zeichen.'
   }
 }
 </script>
