@@ -1,5 +1,11 @@
 <template>
   <div class="m-6 relative">
+    <button
+      class="absolute right-2 bg-regal-blue-900 text-white rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-regal-blue-700 focus:outline-none focus:ring-2 focus:ring-regal-blue-500"
+      @click="openFilterModal"
+    >
+      <font-awesome-icon icon="filter" size="lg" />
+    </button>
     <h1 class="text-2xl font-bold mb-4 text-regal-blue-900">Übersicht der Meldungen</h1>
 
     <div v-if="loading" class="mb-4">Lade Meldungen...</div>
@@ -114,6 +120,17 @@
       />
     </div>
 
+    <div
+      v-if="showFilterModal"
+      class="absolute inset-0 z-50 flex items-center justify-center bg-black/30"
+    >
+      <ProblemFilterModal
+        :problems="problems"
+        @close="closeFilterModal"
+        @apply-filters="handleApplyFilters"
+      />
+    </div>
+
     <div v-if="deleting">Lösche Eintrag...</div>
     <div v-if="deleteError" class="text-red-500">Fehler beim Löschen: {{ deleteError }}</div>
     <div v-if="deleteSuccess" class="text-green-500">Eintrag erfolgreich gelöscht!</div>
@@ -134,13 +151,18 @@ import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue' // Pfad anp
 import ChangeStatusModal from '@/components/ChangeStatusModal.vue' // Pfad anpassen!
 import useDeleteProblem from '@/composables/useDeleteProblem'
 import useUpdateProblemStatus from '@/composables/useUpdateProblemStatus'
+import ProblemFilterModal from '@/components/ProblemFilterModal.vue'
 
 const { problems, error, loading, fetchProblems } = useFetchProblems()
 
+const showFilterModal = ref(false)
 const showDetails = ref(false)
 const selectedProblemId = ref(null)
 const sortColumn = ref(null)
 const sortDirection = ref('asc')
+
+// Neue Variable für die aktuell anzuzeigende Liste
+const displayedProblems = ref([])
 
 const showDeleteModal = ref(false)
 const itemToDeleteId = ref(null)
@@ -152,7 +174,8 @@ const { updatingStatus, updateStatusError, updateStatusSuccess, updateProblemSta
   useUpdateProblemStatus()
 
 onMounted(async () => {
-  fetchProblems()
+  await fetchProblems()
+  displayedProblems.value = [...problems.value]
 })
 
 const formatDate = (dateTimeString) => {
@@ -184,11 +207,13 @@ const sortProblems = (column) => {
 }
 
 const sortedProblems = computed(() => {
+  const currentList = [...displayedProblems.value]
+
   if (!sortColumn.value) {
-    return [...problems.value] // Gib eine Kopie des ursprünglichen Arrays zurück
+    return currentList
   }
 
-  return [...problems.value].sort((a, b) => {
+  return currentList.sort((a, b) => {
     const aValue = a[sortColumn.value]
     const bValue = b[sortColumn.value]
 
@@ -204,6 +229,32 @@ const sortedProblems = computed(() => {
     return sortDirection.value === 'asc' ? comparison : comparison * -1
   })
 })
+
+const openFilterModal = () => {
+  showFilterModal.value = true
+  // Setze displayedProblems zurück auf alle Probleme, wenn das Modal geschlossen wird
+  displayedProblems.value = [...problems.value]
+}
+
+const closeFilterModal = () => {
+  showFilterModal.value = false
+}
+
+const handleApplyFilters = (filters) => {
+  const newFilteredProblems = problems.value.filter((problem) => {
+    const titleMatch =
+      !filters.title || problem.title?.toLowerCase().includes(filters.title.toLowerCase())
+    const categoryMatch = !filters.category || problem.category === filters.category
+    const statusMatch = !filters.status || problem.status === filters.status
+    const createdAtMatch =
+      (!filters.createdAtFrom || new Date(problem.created_at) >= new Date(filters.createdAtFrom)) &&
+      (!filters.createdAtTo || new Date(problem.created_at) <= new Date(filters.createdAtTo))
+
+    return titleMatch && categoryMatch && statusMatch && createdAtMatch
+  })
+  displayedProblems.value = newFilteredProblems
+  showFilterModal.value = false
+}
 
 const closeDeleteModal = () => {
   showDeleteModal.value = false

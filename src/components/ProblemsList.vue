@@ -125,7 +125,7 @@ const displayedProblems = ref([])
 
 onMounted(async () => {
   await fetchProblems()
-  console.log('Fetching problems...')
+  // console.log('Fetching problems...')
   displayedProblems.value = [...problems.value]
 })
 
