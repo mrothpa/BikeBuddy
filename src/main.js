@@ -20,6 +20,7 @@ import {
   faSortUp,
   faSortDown,
   faFilter,
+  faDownload,
 } from '@fortawesome/free-solid-svg-icons'
 import { faVuejs } from '@fortawesome/free-brands-svg-icons'
 
@@ -36,6 +37,7 @@ library.add(
   faSortUp,
   faSortDown,
   faFilter,
+  faDownload,
 )
 
 const app = createApp(App)

@@ -1,10 +1,17 @@
 <template>
   <div class="m-6 relative">
     <button
-      class="absolute right-2 bg-regal-blue-900 text-white rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-regal-blue-700 focus:outline-none focus:ring-2 focus:ring-regal-blue-500"
+      class="absolute right-2 bg-regal-blue-900 text-white rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-regal-blue-700 focus:outline-none focus:ring-2 focus:ring-regal-blue-500 cursor-pointer"
       @click="openFilterModal"
     >
       <font-awesome-icon icon="filter" size="lg" />
+    </button>
+    <button
+      @click="handleDownload"
+      :disabled="isDownloading"
+      class="absolute right-14 bg-regal-blue-900 text-white rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-regal-blue-700 focus:outline-none focus:ring-2 focus:ring-regal-blue-500 cursor-pointer"
+    >
+      <font-awesome-icon icon="download" size="lg" />
     </button>
     <h1 class="text-2xl font-bold mb-4 text-regal-blue-900">Übersicht der Meldungen</h1>
 
@@ -140,6 +147,11 @@
       Fehler Aktualisieren: {{ updateStatusError }}
     </div>
     <div v-if="updateStatusSuccess" class="text-green-500">Status aktualisiert!</div>
+
+    <div>
+      <p v-if="isDownloading">Daten werden heruntergeladen...</p>
+      <p v-if="downloadError" class="text-red-500">Fehler beim Download: {{ downloadError }}</p>
+    </div>
   </div>
 </template>
 
@@ -152,8 +164,10 @@ import ChangeStatusModal from '@/components/ChangeStatusModal.vue' // Pfad anpas
 import useDeleteProblem from '@/composables/useDeleteProblem'
 import useUpdateProblemStatus from '@/composables/useUpdateProblemStatus'
 import ProblemFilterModal from '@/components/ProblemFilterModal.vue'
+import useDownloadData from '@/composables/useDownloadData'
 
 const { problems, error, loading, fetchProblems } = useFetchProblems()
+const { isDownloading, downloadError, downloadCsv } = useDownloadData()
 
 const showFilterModal = ref(false)
 const showDetails = ref(false)
@@ -296,10 +310,14 @@ const handleChangeStatus = async (newStatus) => {
     await fetchProblems()
   }
 }
+
+const handleDownload = () => {
+  downloadCsv(sortedProblems.value, 'radweg_meldungen.csv')
+}
 </script>
 
 <style scoped>
-.cursor-pointer {
+/* .cursor-pointer {
   cursor: pointer;
-}
+} */
 </style>
