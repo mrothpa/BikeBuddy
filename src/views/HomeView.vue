@@ -1,7 +1,7 @@
 <template>
   <BikeMapVue v-if="showMap" />
-  <ProblemsListVue v-else-if="user_role === 'user'" />
-  <ProblemsListAdminVue v-else />
+  <ProblemsListAdminVue v-else-if="user_role === 'admin' || user_role === 'city_admin'" />
+  <ProblemsListVue v-else />
 </template>
 
 <script setup>

@@ -11,7 +11,7 @@ export const useAppConfigStore = defineStore('appConfig', {
       longitude: 8.475,
       zoom: 13,
     },
-    user_role: null,
+    user_role: localStorage.getItem('user_role') || null,
     showMap: true,
   }),
   getters: {
@@ -36,6 +36,11 @@ export const useAppConfigStore = defineStore('appConfig', {
     },
     setUserRole(new_role) {
       this.user_role = new_role
+      localStorage.setItem('user_role', new_role)
+    },
+    clearUserRole() {
+      this.user_role = null
+      localStorage.removeItem('user_role')
     },
     setShowMap() {
       this.showMap = !this.showMap
