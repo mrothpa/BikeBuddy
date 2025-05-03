@@ -34,7 +34,7 @@
     v-if="isAddingProblem"
     class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-75 rounded-full shadow-lg py-2 px-4 text-gray-800 font-semibold"
   >
-    Standort lokalisieren
+    Marker ggf. verschieben
   </div>
   <div
     v-else
@@ -125,17 +125,17 @@ const toggleAddProblem = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           centerMap(position.coords.latitude, position.coords.longitude)
-          console.log('Standort abgerufen:', newProblemLocation.value)
+          // console.log('Standort abgerufen:', newProblemLocation.value)
         },
         () => {
           centerMap(defaultMapCenter.value.latitude, defaultMapCenter.value.longitude)
-          console.log('Standortabfrage abgelehnt oder fehlgeschlagen.')
+          // console.log('Standortabfrage abgelehnt oder fehlgeschlagen.')
         },
         { enableHighAccuracy: false, timeout: 5000, maximumAge: 0 },
       )
     } else {
       centerMap(defaultMapCenter.value.latitude, defaultMapCenter.value.longitude)
-      console.log('Geolocation wird von diesem Browser nicht unterstützt.')
+      // console.log('Geolocation wird von diesem Browser nicht unterstützt.')
     }
     // Verstecke die existierenden Marker
     problemMarkers.value.forEach((marker) => {
