@@ -62,7 +62,7 @@
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
               <button
                 @click="openProblemDetails(problem.id)"
-                class="text-regal-blue-500 hover:text-regal-blue-700 font-semibold"
+                class="text-regal-blue-500 hover:text-regal-blue-700 font-semibold hover:underline cursor-pointer"
               >
                 {{ problem.title }}
               </button>
@@ -73,7 +73,10 @@
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
               {{ problem.category || '-' }}
             </td>
-            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+            <td
+              class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center hover:underline cursor-pointer"
+              @click="triggerChangeStatus(problem.id)"
+            >
               {{ problem.status || '-' }}
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
@@ -99,12 +102,27 @@
     </div>
 
     <div v-if="showDeleteModal">
-      <ConfirmDeleteModal @close="closeModal" @confirm-delete="handleDeleteConfirmed" />
+      <ConfirmDeleteModal @close="closeDeleteModal" @confirm-delete="handleDeleteConfirmed" />
+    </div>
+
+    <div v-if="showChangeStatusModal">
+      <ChangeStatusModal
+        @close="closeChangeStatusModal"
+        @status-1="handleChangeStatus('status-1')"
+        @status-2="handleChangeStatus('status-2')"
+        @status-3="handleChangeStatus('status-3')"
+      />
     </div>
 
     <div v-if="deleting">Lösche Eintrag...</div>
     <div v-if="deleteError" class="text-red-500">Fehler beim Löschen: {{ deleteError }}</div>
     <div v-if="deleteSuccess" class="text-green-500">Eintrag erfolgreich gelöscht!</div>
+
+    <div v-if="updatingStatus">Aktualisiere Status...</div>
+    <div v-if="updateStatusError" class="text-red-500">
+      Fehler Aktualisieren: {{ updateStatusError }}
+    </div>
+    <div v-if="updateStatusSuccess" class="text-green-500">Status aktualisiert!</div>
   </div>
 </template>
 
@@ -113,7 +131,9 @@ import useFetchProblems from '@/composables/useFetchProblems'
 import { onMounted, ref, computed } from 'vue'
 import ProblemDetails from '@/components/ProblemDetailsModal.vue' // Pfad anpassen!
 import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue' // Pfad anpassen!
+import ChangeStatusModal from '@/components/ChangeStatusModal.vue' // Pfad anpassen!
 import useDeleteProblem from '@/composables/useDeleteProblem'
+import useUpdateProblemStatus from '@/composables/useUpdateProblemStatus'
 
 const { problems, error, loading, fetchProblems } = useFetchProblems()
 
@@ -126,14 +146,14 @@ const showDeleteModal = ref(false)
 const itemToDeleteId = ref(null)
 const { deleting, deleteError, deleteSuccess, deleteProblem } = useDeleteProblem()
 
+const showChangeStatusModal = ref(false)
+const itemToChangeStatusId = ref(null)
+const { updatingStatus, updateStatusError, updateStatusSuccess, updateProblemStatus } =
+  useUpdateProblemStatus()
+
 onMounted(async () => {
   fetchProblems()
 })
-
-const triggerDeleteConfirmation = (itemId) => {
-  itemToDeleteId.value = itemId
-  showDeleteModal.value = true
-}
 
 const formatDate = (dateTimeString) => {
   if (!dateTimeString) return '-'
@@ -185,22 +205,44 @@ const sortedProblems = computed(() => {
   })
 })
 
-const closeModal = () => {
+const closeDeleteModal = () => {
   showDeleteModal.value = false
   itemToDeleteId.value = null
 }
 
+const triggerDeleteConfirmation = (itemId) => {
+  itemToDeleteId.value = itemId
+  showDeleteModal.value = true
+}
+
 const handleDeleteConfirmed = async () => {
-  console.log('Löschen des Elements mit ID: ', itemToDeleteId.value, ' wird durchgeführt')
+  // console.log('Löschen des Elements mit ID: ', itemToDeleteId.value, ' wird durchgeführt')
   if (itemToDeleteId.value) {
     const success = await deleteProblem(itemToDeleteId.value)
     if (success) {
       await fetchProblems()
-    } else if (deleteError.value) {
-      console.error('Fehler beim Löschen: ', deleteError.value)
+      // } else if (deleteError.value) {
+      //   console.error('Fehler beim Löschen: ', deleteError.value)
     }
     showDeleteModal.value = false
     itemToDeleteId.value = null
+  }
+}
+
+const closeChangeStatusModal = () => {
+  showChangeStatusModal.value = false
+  itemToChangeStatusId.value = null
+}
+
+const triggerChangeStatus = (itemId) => {
+  showChangeStatusModal.value = true
+  itemToChangeStatusId.value = itemId
+}
+
+const handleChangeStatus = async (newStatus) => {
+  const success = await updateProblemStatus(itemToChangeStatusId.value, newStatus)
+  if (success) {
+    await fetchProblems()
   }
 }
 </script>

@@ -38,7 +38,7 @@ const closeModal = () => {
 }
 
 const confirmDelete = () => {
-  console.log('Löschen wurde bestätigt!')
+  // console.log('Löschen wurde bestätigt!')
   emit('confirm-delete')
   closeModal() // Optional: Schließe das Modal nach der Bestätigung
 }
