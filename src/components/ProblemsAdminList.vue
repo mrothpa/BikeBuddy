@@ -101,6 +101,10 @@
     <div v-if="showDeleteModal">
       <ConfirmDeleteModal @close="closeModal" @confirm-delete="handleDeleteConfirmed" />
     </div>
+
+    <div v-if="deleting">Lösche Eintrag...</div>
+    <div v-if="deleteError" class="text-red-500">Fehler beim Löschen: {{ deleteError }}</div>
+    <div v-if="deleteSuccess" class="text-green-500">Eintrag erfolgreich gelöscht!</div>
   </div>
 </template>
 
@@ -109,6 +113,7 @@ import useFetchProblems from '@/composables/useFetchProblems'
 import { onMounted, ref, computed } from 'vue'
 import ProblemDetails from '@/components/ProblemDetailsModal.vue' // Pfad anpassen!
 import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue' // Pfad anpassen!
+import useDeleteProblem from '@/composables/useDeleteProblem'
 
 const { problems, error, loading, fetchProblems } = useFetchProblems()
 
@@ -119,6 +124,7 @@ const sortDirection = ref('asc')
 
 const showDeleteModal = ref(false)
 const itemToDeleteId = ref(null)
+const { deleting, deleteError, deleteSuccess, deleteProblem } = useDeleteProblem()
 
 onMounted(async () => {
   fetchProblems()
@@ -184,8 +190,18 @@ const closeModal = () => {
   itemToDeleteId.value = null
 }
 
-const handleDeleteConfirmed = () => {
+const handleDeleteConfirmed = async () => {
   console.log('Löschen des Elements mit ID: ', itemToDeleteId.value, ' wird durchgeführt')
+  if (itemToDeleteId.value) {
+    const success = await deleteProblem(itemToDeleteId.value)
+    if (success) {
+      await fetchProblems()
+    } else if (deleteError.value) {
+      console.error('Fehler beim Löschen: ', deleteError.value)
+    }
+    showDeleteModal.value = false
+    itemToDeleteId.value = null
+  }
 }
 </script>
 
