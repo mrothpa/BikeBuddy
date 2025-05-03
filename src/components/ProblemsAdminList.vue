@@ -81,7 +81,7 @@
             </td>
             <td
               class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right text-regal-blue-500 hover:text-regal-blue-700 cursor-pointer"
-              @click="handleDelete"
+              @click="triggerDeleteConfirmation(problem.id)"
             >
               Löschen
             </td>
@@ -97,6 +97,10 @@
     >
       <ProblemDetails :problemId="selectedProblemId" @close="closeProblemDetails" />
     </div>
+
+    <div v-if="showDeleteModal">
+      <ConfirmDeleteModal @close="closeModal" @confirm-delete="handleDeleteConfirmed" />
+    </div>
   </div>
 </template>
 
@@ -104,6 +108,7 @@
 import useFetchProblems from '@/composables/useFetchProblems'
 import { onMounted, ref, computed } from 'vue'
 import ProblemDetails from '@/components/ProblemDetailsModal.vue' // Pfad anpassen!
+import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue' // Pfad anpassen!
 
 const { problems, error, loading, fetchProblems } = useFetchProblems()
 
@@ -112,9 +117,17 @@ const selectedProblemId = ref(null)
 const sortColumn = ref(null)
 const sortDirection = ref('asc')
 
+const showDeleteModal = ref(false)
+const itemToDeleteId = ref(null)
+
 onMounted(async () => {
   fetchProblems()
 })
+
+const triggerDeleteConfirmation = (itemId) => {
+  itemToDeleteId.value = itemId
+  showDeleteModal.value = true
+}
 
 const formatDate = (dateTimeString) => {
   if (!dateTimeString) return '-'
@@ -166,8 +179,13 @@ const sortedProblems = computed(() => {
   })
 })
 
-const handleDelete = () => {
-  console.log('Deleted')
+const closeModal = () => {
+  showDeleteModal.value = false
+  itemToDeleteId.value = null
+}
+
+const handleDeleteConfirmed = () => {
+  console.log('Löschen des Elements mit ID: ', itemToDeleteId.value, ' wird durchgeführt')
 }
 </script>
 
