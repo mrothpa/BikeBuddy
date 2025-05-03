@@ -45,5 +45,8 @@ export const useAppConfigStore = defineStore('appConfig', {
     setShowMap() {
       this.showMap = !this.showMap
     },
+    setShowMapDefault() {
+      this.showMap = true
+    },
   },
 })

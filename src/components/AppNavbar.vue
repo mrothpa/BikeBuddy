@@ -1,11 +1,9 @@
 <template>
   <nav class="bg-white sticky top-0 z-50 shadow-md w-full">
     <div class="max-w-screen-xl mx-auto px-4 py-3 flex justify-between items-center">
-      <router-link to="/"
-        ><h1 class="text-regal-blue-900 text-xl md:text-2xl font-bold">
-          BikeBuddy BiG Lindenhof
-        </h1></router-link
-      >
+      <button @click="handleTitleClick" class="cursor-pointer">
+        <h1 class="text-regal-blue-900 text-xl md:text-2xl font-bold">BikeBuddy BiG Lindenhof</h1>
+      </button>
 
       <!-- buttons -->
       <div class="flex items-center">
@@ -91,4 +89,16 @@ const handleShowMap = () => {
   showMap.value = appConfigStore.getShowMap
   closeMenu()
 }
+
+const handleTitleClick = () => {
+  appConfigStore.setShowMapDefault()
+  closeMenu()
+  router.push('/')
+}
 </script>
+
+<style scoped>
+.cursor-pointer {
+  cursor: pointer;
+}
+</style>
