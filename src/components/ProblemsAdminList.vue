@@ -54,6 +54,11 @@
               <font-awesome-icon v-else :icon="['fas', 'sort']" />
             </th>
             <th
+              class="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
+            >
+              E-Mail
+            </th>
+            <th
               class="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
               @click="sortProblems('created_at')"
             >
@@ -91,6 +96,11 @@
               @click="triggerChangeStatus(problem.id)"
             >
               {{ problem.status || '-' }}
+            </td>
+            <td
+              class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center hover:underline cursor-pointer"
+            >
+              <a :href="`mailto:${problem.user.email}`">{{ problem.user.email }}</a>
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
               {{ formatDate(problem.created_at) }}
