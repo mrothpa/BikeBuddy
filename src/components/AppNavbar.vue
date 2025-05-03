@@ -33,9 +33,9 @@
         <router-link to="/" class="hover:underline" @click="handleShowMap" v-else
           >Kartenansicht</router-link
         >
-        <router-link to="/about" class="hover:underline" @click="closeMenu"
-          >Über die Karte</router-link
-        >
+        <button class="hover:underline text-left" @click="handleOverCardClick">
+          Über die Karte
+        </button>
         <router-link to="/datenschutz" class="hover:underline" @click="closeMenu"
           >Datenschutzerklärung</router-link
         >
@@ -58,10 +58,11 @@
 import { useAppConfigStore } from '@/stores/appConfig'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const isOpen = ref(false)
 const router = useRouter()
+const route = useRoute()
 const appConfigStore = useAppConfigStore()
 const { isAuthenticated, showMap } = storeToRefs(appConfigStore)
 
@@ -94,6 +95,17 @@ const handleTitleClick = () => {
   appConfigStore.setShowMapDefault()
   closeMenu()
   router.push('/')
+}
+
+const handleOverCardClick = () => {
+  appConfigStore.setShowInfoTextAtStart()
+  closeMenu()
+  if (route.name === 'home') {
+    appConfigStore.setShowMapDefault()
+    window.location.reload()
+  } else {
+    router.push('/')
+  }
 }
 </script>
 
