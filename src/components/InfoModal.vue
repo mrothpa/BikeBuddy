@@ -62,7 +62,6 @@ Bitte registrieren Sie sich, bevor Sie mit der App arbeiten.
 
 Herzliche Grüße,
 Ihre Bürger-Interessen-Gemeinschaft (BIG) Lindenhof e.V.
-Viele Grüße Kathrin
 `)
 </script>
 

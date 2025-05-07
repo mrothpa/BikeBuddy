@@ -34,13 +34,19 @@
     v-if="isAddingProblem"
     class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-75 rounded-full shadow-lg py-2 px-4 text-gray-800 font-semibold"
   >
-    Marker ggf. verschieben
+    Marker ggf. verschieben und bestätigen
+  </div>
+  <div
+    v-else-if="isAuthenticated"
+    class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-75 rounded-full shadow-lg py-2 px-4 text-gray-800 font-semibold"
+  >
+    Problem melden über "+"
   </div>
   <div
     v-else
     class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-75 rounded-full shadow-lg py-2 px-4 text-gray-800 font-semibold"
   >
-    Problem melden
+    Bitte anmelden
   </div>
 </template>
 
@@ -131,7 +137,7 @@ const toggleAddProblem = () => {
           centerMap(defaultMapCenter.value.latitude, defaultMapCenter.value.longitude)
           // console.log('Standortabfrage abgelehnt oder fehlgeschlagen.')
         },
-        { enableHighAccuracy: false, timeout: 5000, maximumAge: 0 },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 },
       )
     } else {
       centerMap(defaultMapCenter.value.latitude, defaultMapCenter.value.longitude)
