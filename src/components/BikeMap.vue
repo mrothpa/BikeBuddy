@@ -73,7 +73,7 @@ const appConfigStore = useAppConfigStore()
 const { isAuthenticated, defaultMapCenter, showInfoTextAtStart, showInfoTextAddProblem } =
   storeToRefs(appConfigStore)
 const showInfoText = ref(true)
-const showInfoTextAddProblemLokal = ref(true)
+const showInfoTextAddProblemLokal = ref(null)
 const isAddingProblem = ref(false)
 const newProblemLocation = ref(null)
 const problemMarkers = ref([])
@@ -84,7 +84,10 @@ onMounted(async () => {
   if (!showInfoTextAtStart.value || showInfoTextAtStart.value === 'false') {
     showInfoText.value = false
   }
-  if (showInfoTextAddProblem.value || showInfoTextAddProblem.value === 'true') {
+  if (
+    (showInfoTextAddProblem.value || showInfoTextAddProblem.value === 'true') &&
+    showInfoTextAddProblem.value !== 'false'
+  ) {
     showInfoTextAddProblemLokal.value = true
   } else {
     showInfoTextAddProblemLokal.value = false
