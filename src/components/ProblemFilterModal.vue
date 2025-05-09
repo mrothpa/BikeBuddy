@@ -7,7 +7,7 @@
 
       <h2 class="text-xl font-bold mb-4 text-regal-blue-900">Filter</h2>
 
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <label for="filter-title" class="block text-gray-700 text-sm font-bold mb-2">Titel:</label>
         <input
           type="text"
@@ -15,7 +15,7 @@
           v-model="filters.title"
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
-      </div>
+      </div> -->
 
       <div class="mb-4">
         <label for="filter-category" class="block text-gray-700 text-sm font-bold mb-2"
@@ -111,7 +111,7 @@ const props = defineProps({
 const emit = defineEmits(['close', 'apply-filters'])
 
 const filters = ref({
-  title: '',
+  // title: '',
   category: '',
   status: '',
   createdAtFrom: '',

@@ -17,6 +17,8 @@ export default function useAddProblem() {
     error.value = null
     success.value = false
 
+    problemData.title = problemData.category // title
+
     try {
       const responseData = await apiFetch(`${appConfigStore.getBackendUrl}problems`, {
         method: 'POST',

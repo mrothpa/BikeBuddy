@@ -4,7 +4,8 @@ import { defineStore } from 'pinia'
 export const useAppConfigStore = defineStore('appConfig', {
   state: () => ({
     // backendUrl: 'http://127.0.0.1:8000/api/',
-    backendUrl: 'http://scal.red/api/',
+    // backendUrl: 'http://scal.red/api/',
+    backendUrl: 'http://fahrrad.big-lindenhof.de/api/',
     pasetoToken: localStorage.getItem('pasetoToken') || null,
     defaultMapCenter: {
       latitude: 49.468,

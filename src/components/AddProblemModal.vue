@@ -7,7 +7,7 @@
       <h2 class="text-xl font-bold mb-4 text-regal-blue-900">Neues Problem melden</h2>
 
       <div v-if="marker">
-        <div class="mb-4">
+        <!-- <div class="mb-4">
           <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Titel (*)</label>
           <input
             type="text"
@@ -17,21 +17,7 @@
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
           <p v-if="titleError" class="text-red-500 text-xs italic">{{ titleError }}</p>
-        </div>
-
-        <div class="mb-4">
-          <label for="description" class="block text-gray-700 text-sm font-bold mb-2"
-            >Beschreibung (*)</label
-          >
-          <textarea
-            id="description"
-            v-model="form.description"
-            placeholder="Detailliertere Beschreibung des Problems"
-            rows="4"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          ></textarea>
-          <p v-if="descriptionError" class="text-red-500 text-xs italic">{{ descriptionError }}</p>
-        </div>
+        </div> -->
 
         <div class="mb-4">
           <label for="category" class="block text-gray-700 text-sm font-bold mb-2"
@@ -54,6 +40,20 @@
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="description" class="block text-gray-700 text-sm font-bold mb-2"
+            >Beschreibung (*)</label
+          >
+          <textarea
+            id="description"
+            v-model="form.description"
+            placeholder="Detailliertere Beschreibung des Problems"
+            rows="4"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          ></textarea>
+          <p v-if="descriptionError" class="text-red-500 text-xs italic">{{ descriptionError }}</p>
         </div>
 
         <!-- <div class="mb-4">
@@ -149,7 +149,7 @@ const { loading, error, success, addProblem } = useAddProblem()
 const { loadingSolution, errorSolution, successSolution, addSolution } = useAddSolution()
 
 const form = ref({
-  title: '',
+  // title: '', // title
   description: '',
   category: '',
   latitude: props.marker ? props.marker.getLatLng().lat : null,
@@ -196,7 +196,7 @@ watch(
 watch(success, (isSuccess) => {
   if (isSuccess) {
     // Setze Formularfelder zurück
-    form.value.title = ''
+    // form.value.title = '' // title
     form.value.description = ''
     form.value.category = ''
     titleError.value = ''
@@ -227,9 +227,9 @@ const addCategory = () => {
 }
 
 const validateForm = () => {
-  titleError.value = form.value.title ? '' : 'Titel ist erforderlich.'
+  // titleError.value = form.value.title ? '' : 'Titel ist erforderlich.' // title
   descriptionError.value = form.value.description ? '' : 'Beschreibung ist erforderlich.'
-  titleError.value = form.value.title.length < 64 ? '' : 'Titel zu lang.'
+  // titleError.value = form.value.title.length < 64 ? '' : 'Titel zu lang.' // title
   descriptionError.value = form.value.description.length < 65536 ? '' : 'Beschreibung zu lang.'
   return !titleError.value && !descriptionError.value
 }

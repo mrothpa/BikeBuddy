@@ -96,7 +96,7 @@ const addTileLayer = () => {
   problems.value.forEach((problem) => {
     const marker = L.marker([problem.latitude, problem.longitude])
       .bindPopup(
-        `<b>${problem.title}</b> <a href="#" class="problem-link" data-problem-id="${problem.id}">Details anzeigen</a>`,
+        `<b>${problem.category}</b> <a href="#" class="problem-link" data-problem-id="${problem.id}">Details anzeigen</a>`, // title
       )
       .addTo(map.value)
     problemMarkers.value.push(marker)

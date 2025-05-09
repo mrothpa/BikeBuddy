@@ -11,8 +11,8 @@
         <div class="mb-4">
           <div class="flex justify-between items-start mb-2">
             <div>
-              <h2 class="text-xl font-bold text-regal-blue-900">{{ problemDetails?.title }}</h2>
-              <p class="text-sm text-gray-600">{{ problemDetails?.category }}</p>
+              <h2 class="text-xl font-bold text-regal-blue-900">{{ problemDetails?.category }}</h2>
+              <!-- <p class="text-sm text-gray-600">{{ problemDetails?.category }}</p> -- title -->
             </div>
             <div
               v-if="problemDetails?.status"
@@ -119,8 +119,7 @@ const {
 } = useFetchProblemDetails(props.problemId)
 
 const { isUpvoted, loading: upvoteLoading, error: upvoteError, checkUpvoted } = useCheckUpvoted()
-const { loadingUpvote, errorUpvote, succesUpvote, upvoteProblem, downvoteProblem } =
-  useUpvoteProblem()
+const { loadingUpvote, errorUpvote, upvoteProblem, downvoteProblem } = useUpvoteProblem()
 
 onMounted(async () => {
   if (isAuthenticated.value) {

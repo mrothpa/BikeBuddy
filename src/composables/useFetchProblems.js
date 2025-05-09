@@ -50,7 +50,7 @@ export default function useFetchProblems() {
           id: problem.id,
           latitude: problem.latitude,
           longitude: problem.longitude,
-          title: problem.title,
+          // title: problem.title, // title
           status: problem.status,
           category: problem.category,
           created_at: problem.created_at,

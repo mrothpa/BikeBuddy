@@ -17,19 +17,6 @@
           <tr>
             <th
               class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
-              @click="sortProblems('title')"
-            >
-              Titel
-              <span v-if="sortColumn === 'title'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
-              <font-awesome-icon v-else :icon="['fas', 'sort']" />
-            </th>
-            <th
-              class="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
-            >
-              Koordinaten
-            </th>
-            <th
-              class="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
               @click="sortProblems('category')"
             >
               Kategorie
@@ -38,6 +25,21 @@
               }}</span>
               <font-awesome-icon v-else :icon="['fas', 'sort']" />
             </th>
+            <th
+              class="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
+            >
+              Koordinaten
+            </th>
+            <!-- <th
+              class="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
+              @click="sortProblems('category')"
+            >
+              Kategorie
+              <span v-if="sortColumn === 'category'">{{
+                sortDirection === 'asc' ? '▲' : '▼'
+              }}</span>
+              <font-awesome-icon v-else :icon="['fas', 'sort']" />
+            </th> -- title -->
             <th
               class="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
               @click="sortProblems('status')"
@@ -65,15 +67,15 @@
                 @click="openProblemDetails(problem.id)"
                 class="text-regal-blue-500 hover:text-regal-blue-700 font-semibold"
               >
-                {{ problem.title }}
+                {{ problem.category }}
               </button>
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
               ({{ problem.latitude.toFixed(5) }}, {{ problem.longitude.toFixed(5) }})
             </td>
-            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+            <!-- <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
               {{ problem.category || '-' }}
-            </td>
+            </td> -- title -->
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
               {{ problem.status || '-' }}
             </td>
@@ -193,15 +195,14 @@ const closeFilterModal = () => {
 
 const handleApplyFilters = (filters) => {
   const newFilteredProblems = problems.value.filter((problem) => {
-    const titleMatch =
-      !filters.title || problem.title?.toLowerCase().includes(filters.title.toLowerCase())
+    // const titleMatch = !filters.title || problem.title?.toLowerCase().includes(filters.title.toLowerCase()) // title
     const categoryMatch = !filters.category || problem.category === filters.category
     const statusMatch = !filters.status || problem.status === filters.status
     const createdAtMatch =
       (!filters.createdAtFrom || new Date(problem.created_at) >= new Date(filters.createdAtFrom)) &&
       (!filters.createdAtTo || new Date(problem.created_at) <= new Date(filters.createdAtTo))
 
-    return titleMatch && categoryMatch && statusMatch && createdAtMatch
+    return categoryMatch && statusMatch && createdAtMatch // title: titleMatch &&
   })
   displayedProblems.value = newFilteredProblems
   showFilterModal.value = false
