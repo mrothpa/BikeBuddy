@@ -8,7 +8,7 @@ export default function useFetchProblemDetails(problemId) {
   const error = ref(null)
   const loadingProblem = ref(false)
   const loadingSolutions = ref(false)
-  console.log(problemId)
+  // console.log(problemId)
 
   const fetchProblem = async () => {
     loadingProblem.value = true

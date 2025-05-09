@@ -266,7 +266,7 @@ const submitForm = async () => {
     return
   }
 
-  console.log('form value category: ', form.value.category)
+  // console.log('form value category: ', form.value.category)
 
   if (form.value.category === 'new') {
     addCategory()

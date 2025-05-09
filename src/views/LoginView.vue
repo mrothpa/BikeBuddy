@@ -60,7 +60,7 @@ const route = useRoute()
 const errorMessage = ref('')
 
 onMounted(() => {
-  console.log('LoginPage mounted ', route.query)
+  // console.log('LoginPage mounted ', route.query)
   if (route.query.sessionExpired) {
     errorMessage.value = 'Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.'
   }

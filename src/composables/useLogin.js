@@ -18,7 +18,7 @@ export default function useLogin() {
     loading.value = true
     error.value = null
 
-    console.log({ email: loginData.email, password: loginData.password })
+    // console.log({ email: loginData.email, password: loginData.password })
 
     try {
       const response = await fetch(appConfigStore.getBackendUrl + 'login', {
@@ -29,7 +29,7 @@ export default function useLogin() {
         body: JSON.stringify(loginData),
       })
 
-      console.log(response)
+      // console.log(response)
 
       if (!response.ok) {
         const errorData = await response.json()
