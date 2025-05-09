@@ -15,6 +15,7 @@ export const useAppConfigStore = defineStore('appConfig', {
     user_role: localStorage.getItem('user_role') || null,
     showMap: true,
     showInfoTextAtStart: localStorage.getItem('infoText') || true,
+    showInfoTextAddProblem: localStorage.getItem('infoTextAddProblem') || true,
   }),
   getters: {
     getBackendUrl: (state) => state.backendUrl,
@@ -24,6 +25,7 @@ export const useAppConfigStore = defineStore('appConfig', {
     getUserRole: (state) => state.user_role,
     getShowMap: (state) => state.showMap,
     getShowInfoTextAtStart: (state) => state.showInfoTextAtStart,
+    getShowInfoTextAddProblem: (state) => state.showInfoTextAddProblem,
   },
   actions: {
     setBackendUrl(newUrl) {
@@ -58,6 +60,14 @@ export const useAppConfigStore = defineStore('appConfig', {
     setShowInfoTextAtStartNot() {
       localStorage.setItem('infoText', false)
       this.showInfoTextAtStart = false
+    },
+    setShowInfoTextAddProblem() {
+      localStorage.setItem('infoTextAddProblem', true)
+      this.showInfoTextAddProblem = true
+    },
+    setShowInfoTextAddProblemNot() {
+      localStorage.setItem('infoTextAddProblem', false)
+      this.showInfoTextAddProblem = false
     },
   },
 })

@@ -36,6 +36,9 @@
         <button class="hover:underline text-left" @click="handleOverCardClick">
           Über die Karte
         </button>
+        <button class="hover:underline text-left" @click="handleShowIntroductionClick">
+          Problem-Melden Anleitung (Zusätzlich "+" drücken)
+        </button>
         <router-link to="/datenschutz" class="hover:underline" @click="closeMenu"
           >Datenschutzerklärung</router-link
         >
@@ -99,6 +102,17 @@ const handleTitleClick = () => {
 
 const handleOverCardClick = () => {
   appConfigStore.setShowInfoTextAtStart()
+  closeMenu()
+  if (route.name === 'home') {
+    appConfigStore.setShowMapDefault()
+    window.location.reload()
+  } else {
+    router.push('/')
+  }
+}
+
+const handleShowIntroductionClick = () => {
+  appConfigStore.setShowInfoTextAddProblem()
   closeMenu()
   if (route.name === 'home') {
     appConfigStore.setShowMapDefault()

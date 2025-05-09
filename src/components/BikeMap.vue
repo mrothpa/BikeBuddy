@@ -28,6 +28,10 @@
     />
 
     <InfoModal v-if="showInfoText" @close="closeInfoModal" />
+    <InfoModalAddProblem
+      v-if="showInfoTextAddProblemLokal && isAddingProblem"
+      @close="closeInfoModalAddProblem"
+    />
   </div>
 
   <div
@@ -60,13 +64,16 @@ import { useAppConfigStore } from '@/stores/appConfig'
 import { storeToRefs } from 'pinia'
 import AddProblemModal from '@/components/AddProblemModal.vue' // Pfad anpassen!
 import InfoModal from '@/components/InfoModal.vue' // Pfad anpassen!
+import InfoModalAddProblem from '@/components/InfoModalAddProblem.vue' // Pfad anpassen!
 
 const { problems, error, loading, fetchProblems } = useFetchProblems()
 const map = ref(null)
 const selectedProblemId = ref(null)
 const appConfigStore = useAppConfigStore()
-const { isAuthenticated, defaultMapCenter, showInfoTextAtStart } = storeToRefs(appConfigStore)
+const { isAuthenticated, defaultMapCenter, showInfoTextAtStart, showInfoTextAddProblem } =
+  storeToRefs(appConfigStore)
 const showInfoText = ref(true)
+const showInfoTextAddProblemLokal = ref(true)
 const isAddingProblem = ref(false)
 const newProblemLocation = ref(null)
 const problemMarkers = ref([])
@@ -76,6 +83,11 @@ const isAddProblemModalOpen = ref(false)
 onMounted(async () => {
   if (!showInfoTextAtStart.value || showInfoTextAtStart.value === 'false') {
     showInfoText.value = false
+  }
+  if (showInfoTextAddProblem.value || showInfoTextAddProblem.value === 'true') {
+    showInfoTextAddProblemLokal.value = true
+  } else {
+    showInfoTextAddProblemLokal.value = false
   }
   await fetchProblems()
   // console.log('Problems: ', problems.value)
@@ -177,6 +189,10 @@ const handleProblemAdded = async () => {
 
 const closeInfoModal = () => {
   showInfoText.value = false
+}
+
+const closeInfoModalAddProblem = () => {
+  showInfoTextAddProblemLokal.value = false
 }
 </script>
 
