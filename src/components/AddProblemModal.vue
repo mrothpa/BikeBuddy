@@ -29,7 +29,9 @@
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           >
             <option value="" disabled>Kategorie auswählen</option>
-            <option v-for="cat in availableCategories" :key="cat" :value="cat">{{ cat }}</option>
+            <option v-for="cat in availableCategories" :key="cat" :value="cat">
+              {{ cat }}
+            </option>
             <option value="new">Eigene hinzufügen...</option>
           </select>
           <div v-if="form.category === 'new'" class="mt-2">
@@ -40,6 +42,7 @@
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
+          <p v-if="categoryError" class="text-red-500 text-xs italic">{{ categoryError }}</p>
         </div>
 
         <div class="mb-4">
@@ -162,6 +165,7 @@ const formSolution = ref({
 
 const titleError = ref('')
 const descriptionError = ref('')
+const categoryError = ref('')
 
 const latitude = ref(props.marker ? props.marker.getLatLng().lat : '')
 const longitude = ref(props.marker ? props.marker.getLatLng().lng : '')
@@ -227,11 +231,32 @@ const addCategory = () => {
 }
 
 const validateForm = () => {
-  // titleError.value = form.value.title ? '' : 'Titel ist erforderlich.' // title
-  descriptionError.value = form.value.description ? '' : 'Beschreibung ist erforderlich.'
-  // titleError.value = form.value.title.length < 64 ? '' : 'Titel zu lang.' // title
-  descriptionError.value = form.value.description.length < 65536 ? '' : 'Beschreibung zu lang.'
-  return !titleError.value && !descriptionError.value
+  // Fehlerstatus zurücksetzen
+  descriptionError.value = ''
+  categoryError.value = ''
+
+  // 1. Pflichtfeld prüfen
+  if (!form.value.description) {
+    descriptionError.value = 'Beschreibung ist erforderlich.'
+  }
+
+  // 2. Länge prüfen, aber nur wenn kein Fehler vorhanden
+  else if (form.value.description.length >= 65536) {
+    descriptionError.value = 'Beschreibung zu lang.'
+  }
+
+  // 1. Kategorie prüfen
+  if (!form.value.category) {
+    categoryError.value = 'Kategorie erforderlich.'
+  }
+
+  // 2. Länge prüfen
+  else if (form.value.category.length >= 64) {
+    categoryError.value = 'Kategorie zu lang.'
+  }
+
+  // Rückgabe: true, wenn kein Fehler
+  return !descriptionError.value && !categoryError.value
 }
 
 const submitForm = async () => {
@@ -252,19 +277,19 @@ const submitForm = async () => {
     form.value.longitude = props.marker.getLatLng().lng
     responseData.value = await addProblem(form.value)
     // console.log(responseData)
-  }
 
-  if (formSolution.value.description && formSolution.value.description.length < 65536) {
-    const solutionData = {
-      problem: responseData.value.id,
-      description: formSolution.value.description,
+    if (formSolution.value.description && formSolution.value.description.length < 65536) {
+      const solutionData = {
+        problem: responseData.value.id,
+        description: formSolution.value.description,
+      }
+      const result = await addSolution(solutionData)
+      if (result && success.value) {
+        formSolution.value.description = '' // Formular zurücksetzen
+      }
+    } else if (form.value.solution.length >= 65536) {
+      errorSolution.value = 'Lösung zu lang. Maximal 65536 Zeichen.'
     }
-    const result = await addSolution(solutionData)
-    if (result && success.value) {
-      formSolution.value.description = '' // Formular zurücksetzen
-    }
-  } else if (form.value.solution.length >= 65536) {
-    errorSolution.value = 'Lösung zu lang. Maximal 65536 Zeichen.'
   }
 }
 </script>
