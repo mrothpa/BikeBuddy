@@ -36,7 +36,11 @@
         <button class="hover:underline text-left" @click="handleOverCardClick">
           Über die Karte
         </button>
-        <button class="hover:underline text-left" @click="handleShowIntroductionClick">
+        <button
+          v-if="isAuthenticated"
+          class="hover:underline text-left"
+          @click="handleShowIntroductionClick"
+        >
           Problem-Melden Anleitung (Zusätzlich "+" drücken)
         </button>
         <router-link to="/datenschutz" class="hover:underline" @click="closeMenu"

@@ -65,6 +65,17 @@ import { storeToRefs } from 'pinia'
 import AddProblemModal from '@/components/AddProblemModal.vue' // Pfad anpassen!
 import InfoModal from '@/components/InfoModal.vue' // Pfad anpassen!
 import InfoModalAddProblem from '@/components/InfoModalAddProblem.vue' // Pfad anpassen!
+import customMarkerIcon from '@/assets/leaflet/marker-icon.png'
+import customMarkerShadow from '@/assets/leaflet/marker-shadow.png'
+
+const customIcon = L.icon({
+  iconUrl: customMarkerIcon,
+  shadowUrl: customMarkerShadow, // Optional
+  iconSize: [25, 41], // Größe deines Icons
+  iconAnchor: [12, 41], // Punkt des Icons, der auf die Koordinate zeigt
+  popupAnchor: [1, -34], // Punkt, von dem aus das Popup geöffnet wird
+  shadowSize: [41, 41], // Optional
+})
 
 const { problems, error, loading, fetchProblems } = useFetchProblems()
 const map = ref(null)
@@ -109,7 +120,7 @@ const addTileLayer = () => {
   }).addTo(map.value)
 
   problems.value.forEach((problem) => {
-    const marker = L.marker([problem.latitude, problem.longitude])
+    const marker = L.marker([problem.latitude, problem.longitude], { icon: customIcon })
       .bindPopup(
         `<b>${problem.category}</b> <a href="#" class="problem-link" data-problem-id="${problem.id}">Details anzeigen</a>`, // title
       )
@@ -139,7 +150,9 @@ const toggleAddProblem = () => {
       newProblemLocation.value = { latitude: lat, longitude: lng }
       map.value.setView([lat, lng], 13)
       // Platziere den festen Marker
-      newProblemMarker.value = L.marker([lat, lng], { draggable: true }).addTo(map.value)
+      newProblemMarker.value = L.marker([lat, lng], { draggable: true, icon: customIcon }).addTo(
+        map.value,
+      )
     }
 
     if (navigator.geolocation) {
