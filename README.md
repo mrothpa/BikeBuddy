@@ -47,33 +47,33 @@ Optional:
   
 ## Projektstruktur
 
-src/
-├── assets/             // Statische Dateien (CSS, Bilder)
-│   ├── main.css        // Globale CSS-Datei (Tailwind) [cite: 64, 65]
-│   ├── base.css        // Untergeordnete CSS-Datei (Tailwind) [cite: 64, 65]
-│   ├── leaflet/        // Leaflet Marker Icons
-│   └── fonts/          // Globale Schriftarten (Robotic von Google Fonts)
-├── components/         // Vue-Komponenten (wiederverwendbare UI-Elemente)
-│   ├── Navbar.vue
-|   ├── BikeMap.vue
-│   └── Und mehr
-├── composables/
-│   ├── useAddProblem.js
-|   ├── useFetchProblems.js
-│   └── Und mehr
-├── views/              // Vue-Seiten (spezifische Ansichten) [cite: 65, 66]
-│   ├── HomeView.vue    // Startseite
-│   ├── LoginView.vue   // Login-Seite
-│   └── SignupView.vue  // Registrierungsseite
-├── router/             // Vue Router Konfiguration
-│   └── index.js        // Routen-Definitionen [cite: 65, 66]
-├── stores/             // Pinia Store Konfiguration
+src/  
+├── assets/             // Statische Dateien (CSS, Bilder)  
+│   ├── main.css        // Globale CSS-Datei (Tailwind)  
+│   ├── base.css        // Untergeordnete CSS-Datei (Tailwind)  
+│   ├── leaflet/        // Leaflet Marker Icons  
+│   └── fonts/          // Globale Schriftarten (Robotic von Google Fonts)    
+├── components/         // Vue-Komponenten (wiederverwendbare UI-Elemente)    
+│   ├── Navbar.vue  
+│   ├── BikeMap.vue  
+│   └── Und mehr  
+├── composables/         // Wiederverwendbare Logik  
+│   ├── useAddProblem.js  
+│   ├── useFetchProblems.js  
+│   └── Und mehr  
+├── views/              // Vue-Seiten (spezifische Ansichten)  
+│   ├── HomeView.vue    // Startseite  
+│   ├── LoginView.vue   // Login-Seite  
+│   ├── SignupView.vue  // Registrierungsseite  
+├── router/             // Vue Router Konfiguration  
+│   └── index.js        // Routen-Definitionen  
+├── stores/             // Pinia Store Konfiguration  
 │   └── appConfig.js  
-├── utils/              // API-Service (Custom Fetch-Befehl für "Paseto Token noch aktuell"-Abfrage) [cite: 66, 67]
-│   └── auth.js
-│   └── api.js          // Axios Instanz für API-Aufrufe [cite: 66, 67]
-├── App.vue             // Hauptkomponente
-└── main.js             // Einstiegspunkt der Anwendung
+├── utils/              // Hilfsfunktionen (z.B. API-Service)  
+│   ├── auth.js  
+│   └── api.js          // Axios Instanz für API-Aufrufe  
+├── App.vue             // Hauptkomponente  
+└── main.js             // Einstiegspunkt der Anwendung  
 
 ## Deployment
 
