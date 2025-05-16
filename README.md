@@ -2,6 +2,16 @@
 
 Diese Dokumentation beschreibt das Frontend der BikeBuddy Web-App, die für die Bürger-Interessen-Gemeinschaft Lindenhof entwickelt wurde, um Probleme im Radwegenetz zu melden.
 
+## Inhaltsverzeichnis
+
+1.  [Technologien](#technologien)
+2.  [Ziel der Dokumentation](#ziel-der-dokumentation)
+3.  [Voraussetzungen](#voraussetzungen)
+4.  [Installation](#installation)
+5.  [Projektstruktur](#projektstruktur)
+6. [Deployment](#deployment)
+7. [Weiterentwicklung](#weiterentwicklung)
+
 ## Technologien
 
 * Vue 3
