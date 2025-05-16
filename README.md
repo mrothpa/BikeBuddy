@@ -105,6 +105,7 @@ Beiträge zum Projekt sind willkommen!
 * Befolge die Konventionen von TailwindCSS.
 * Kommentiere deinen Code klar und deutlich.
 * Clone das Repository und markiere dieses hier.
+* Beachte die Affero General Public License Version 3 (AGPLv3)
 
 **Abhängigkeiten aktualisieren:**
 
