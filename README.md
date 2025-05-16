@@ -12,6 +12,9 @@ Diese Dokumentation beschreibt das Frontend der BikeBuddy Web-App, die für die 
 6. [Deployment](#deployment)
 7. [Weiterentwicklung](#weiterentwicklung)
 
+## Backend Dokumentation
+Die Dokumentation für das Frontend findest du hier: \[https://github.com/mrothpa/BikeBuddyBackend]
+
 ## Technologien
 
 * Vue 3
