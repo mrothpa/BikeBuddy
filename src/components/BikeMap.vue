@@ -194,7 +194,7 @@ const toggleAddProblem = () => {
     //   map.value.removeLayer(newProblemMarker.value)
     //   newProblemMarker.value = null
     // }
-    console.log('Checking Position: ', newProblemMarker.value)
+    // console.log('Checking Position: ', newProblemMarker.value)
     if (
       !isInLindenhofBounds(
         newProblemMarker.value.getLatLng().lat,
@@ -239,12 +239,12 @@ const handleAuthentication = () => {
 function isInLindenhofBounds(lat, lng) {
   if (!lindenhofBounds.value) return false
   const { north, south, east, west } = lindenhofBounds.value
-  console.log(`Checking bounds: N=${north}, S=${south}, E=${east}, W=${west}`)
-  console.log(`Checking coordinates: Lat=${lat}, Lng=${lng}`)
-  console.log('Norht-Test: ', lat <= north)
-  console.log('South-Test: ', lat >= south)
-  console.log('East-Test: ', lng <= east)
-  console.log('West-Test: ', lng >= west)
+  // console.log(`Checking bounds: N=${north}, S=${south}, E=${east}, W=${west}`)
+  // console.log(`Checking coordinates: Lat=${lat}, Lng=${lng}`)
+  // console.log('Norht-Test: ', lat <= north)
+  // console.log('South-Test: ', lat >= south)
+  // console.log('East-Test: ', lng <= east)
+  // console.log('West-Test: ', lng >= west)
   return lat <= north && lat >= south && lng <= east && lng >= west
 }
 </script>
