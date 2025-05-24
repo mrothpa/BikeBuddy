@@ -85,8 +85,13 @@ const { problems, error, loading, fetchProblems } = useFetchProblems()
 const map = ref(null)
 const selectedProblemId = ref(null)
 const appConfigStore = useAppConfigStore()
-const { isAuthenticated, defaultMapCenter, showInfoTextAtStart, showInfoTextAddProblem } =
-  storeToRefs(appConfigStore)
+const {
+  isAuthenticated,
+  defaultMapCenter,
+  showInfoTextAtStart,
+  showInfoTextAddProblem,
+  lindenhofBounds,
+} = storeToRefs(appConfigStore)
 const router = useRouter()
 const showInfoText = ref(true)
 const showInfoTextAddProblemLokal = ref(null)
@@ -153,7 +158,7 @@ const toggleAddProblem = () => {
     // Standortabfrage und Zentrierung
     const centerMap = (lat, lng) => {
       newProblemLocation.value = { latitude: lat, longitude: lng }
-      map.value.setView([lat, lng], 13)
+      map.value.setView([lat, lng], 16)
       // Platziere den festen Marker
       newProblemMarker.value = L.marker([lat, lng], { draggable: true, icon: customIcon }).addTo(
         map.value,
@@ -189,7 +194,18 @@ const toggleAddProblem = () => {
     //   map.value.removeLayer(newProblemMarker.value)
     //   newProblemMarker.value = null
     // }
-    isAddProblemModalOpen.value = true
+    console.log('Checking Position: ', newProblemMarker.value)
+    if (
+      !isInLindenhofBounds(
+        newProblemMarker.value.getLatLng().lat,
+        newProblemMarker.value.getLatLng().lng,
+      )
+    ) {
+      alert('Bitte Marker im Lindenhof platzieren.')
+      window.location.reload()
+    } else {
+      isAddProblemModalOpen.value = true
+    }
   }
 }
 
@@ -218,6 +234,18 @@ const closeInfoModalAddProblem = () => {
 
 const handleAuthentication = () => {
   router.push({ name: 'login' })
+}
+
+function isInLindenhofBounds(lat, lng) {
+  if (!lindenhofBounds.value) return false
+  const { north, south, east, west } = lindenhofBounds.value
+  console.log(`Checking bounds: N=${north}, S=${south}, E=${east}, W=${west}`)
+  console.log(`Checking coordinates: Lat=${lat}, Lng=${lng}`)
+  console.log('Norht-Test: ', lat <= north)
+  console.log('South-Test: ', lat >= south)
+  console.log('East-Test: ', lng <= east)
+  console.log('West-Test: ', lng >= west)
+  return lat <= north && lat >= south && lng <= east && lng >= west
 }
 </script>
 
