@@ -60,6 +60,8 @@ Hinweis zum Standort: Falls der Standort trotz deiner Freigabe nicht korrekt ist
 
 Du kannst die Karte übrigens mit den üblichen Pinch-to-Zoom-Gesten (auf Touchscreens) oder dem Mausrad vergrößern und verkleinern, um den genauen Ort besser zu sehen.
 
+Prinzipiell kannst du auch Marker außerhalb des Lindenhofs setzen, aber beachte bitte, dass die App hauptsächlich für den Lindenhof gedacht ist. Probleme außerhalb des Lindenhofs werden nicht aktiv bearbeitet, da sie nicht Teil des Projekts sind.
+
 Viel Erfolg beim Melden deines Problems!
 `)
 </script>
