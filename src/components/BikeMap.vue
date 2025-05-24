@@ -36,18 +36,21 @@
 
   <div
     v-if="isAddingProblem"
+    @click="toggleAddProblem"
     class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-75 rounded-full shadow-lg py-2 px-4 text-gray-800 font-semibold"
   >
     Marker ggf. verschieben und bestätigen
   </div>
   <div
     v-else-if="isAuthenticated"
+    @click="toggleAddProblem"
     class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-75 rounded-full shadow-lg py-2 px-4 text-gray-800 font-semibold"
   >
     Problem melden über "+"
   </div>
   <div
     v-else
+    @click="handleAuthentication"
     class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-75 rounded-full shadow-lg py-2 px-4 text-gray-800 font-semibold"
   >
     Bitte anmelden
@@ -67,6 +70,7 @@ import InfoModal from '@/components/InfoModal.vue' // Pfad anpassen!
 import InfoModalAddProblem from '@/components/InfoModalAddProblem.vue' // Pfad anpassen!
 import customMarkerIcon from '@/assets/leaflet/marker-icon.png'
 import customMarkerShadow from '@/assets/leaflet/marker-shadow.png'
+import { useRouter } from 'vue-router'
 
 const customIcon = L.icon({
   iconUrl: customMarkerIcon,
@@ -83,6 +87,7 @@ const selectedProblemId = ref(null)
 const appConfigStore = useAppConfigStore()
 const { isAuthenticated, defaultMapCenter, showInfoTextAtStart, showInfoTextAddProblem } =
   storeToRefs(appConfigStore)
+const router = useRouter()
 const showInfoText = ref(true)
 const showInfoTextAddProblemLokal = ref(null)
 const isAddingProblem = ref(false)
@@ -209,6 +214,10 @@ const closeInfoModal = () => {
 
 const closeInfoModalAddProblem = () => {
   showInfoTextAddProblemLokal.value = false
+}
+
+const handleAuthentication = () => {
+  router.push({ name: 'login' })
 }
 </script>
 
