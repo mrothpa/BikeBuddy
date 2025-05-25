@@ -50,15 +50,26 @@ const closeModal = () => {
 
 const infoTextContent = ref(`Liebe Lindenhöfer der Stadt Mannheim,
 
-wir möchten Ihnen die App "BikeBuddy BiG Lindenhof" vorstellen und Ihnen mit ihr, die Möglichkeit geben, Mängel an unseren öffentlichen Radwegen in Echtzeit zu melden.
+wir möchten Ihnen die App "BikeBuddy BiG Lindenhof" vorstellen und mit ihr die Möglichkeit
+geben, Probleme an unseren öffentlichen Radwegen zu melden und Verbesserungen
+vorzuschlagen.
 
-Ob Schäden im Belag, unklare Markierungen, mangelhafte Beschilderung oder Beleuchtung – all diese Aspekte können Sie direkt über einen Pin im digitalen Stadtplan des Lindenhofs melden. Auch Probleme mit Abstellanlagen für Fahrräder sind wichtig und können berücksichtigt werden.
+Ob schlechte oder risikoreiche Verkehrsführung wie z.B. fehlende Bordsteinabsenkung oder
+scharfe Kurven, mangelhafte Markierung oder Beschilderung, unvorteilhafte Ampelintervalle, oder
+unfallträchtiger Straßenbelag - alle diese Aspekte können Sie im Stadtplan Lindenhof markieren
+und melden. Auch Probleme mit Abstellmöglichkeit für Fahrräder können gemeldet werden.
 
-Durch die Bestätigung dieser Meldungen durch andere Bürger*innen wird die Dringlichkeit deutlich, was uns hilft, die Anliegen effizient an die Kommunalverwaltung weiterzuleiten. So wissen die Verantwortlichen, wo Handlungsbedarf besteht. Darüber hinaus haben wir die Möglichkeit, Sie über die durchgeführten Verbesserungen zu informieren.
+Mit Ihren Hinweisen und auch durch die Bestätigung der Meldungen anderer wird der besondere
+Handlungsbedarf deutlich, den wir an die Stadtverwaltung weitergeben.
 
-Mit der Einführung dieser Web-App leisten wir gemeinsam einen bedeutenden Beitrag zu einem sicheren und umweltfreundlichen Fahrradverkehr und fördern die Mobilität in unserer Region. Lassen Sie uns gemeinsam dafür sorgen, dass der Lindenhof ein noch besserer Ort für Radfahrer wird.
+Akute Mängel melden Sie bitte nach wie vor im Mängelmelder der Stadt Mannheim. Den Link
+dazu finden Sie im Burger-Menu mit den drei Striche.
 
-Bitte registrieren Sie sich, bevor Sie mit der App arbeiten.
+Mit der Einführung dieser Web-App möchten wir einen Beitrag zu einem verbesserten
+Fahrradverkehr in unserem Stadteil leisten. Lassen Sie uns gemeinsam dafür sorgen, dass der
+Lindenhof ein noch besserer Ort für Radfahrer wird.
+
+- Bitte registrieren Sie sich, um mit der App zu arbeiten.
 
 Herzliche Grüße,
 Ihre Bürger-Interessen-Gemeinschaft (BIG) Lindenhof e.V.

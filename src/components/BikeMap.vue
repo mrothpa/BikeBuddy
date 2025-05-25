@@ -10,7 +10,7 @@
       @close="selectedProblemId = null"
     />
 
-    <button
+    <!-- <button
       v-if="isAuthenticated"
       @click="toggleAddProblem"
       class="fixed bottom-6 right-6 bg-regal-blue-900 text-white rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-regal-blue-500"
@@ -18,7 +18,7 @@
       style="width: 56px; height: 56px; display: flex; justify-content: center; align-items: center"
     >
       <font-awesome-icon :icon="isAddingProblem ? 'check' : 'plus'" size="lg" />
-    </button>
+    </button> -->
 
     <AddProblemModal
       :marker="newProblemMarker"

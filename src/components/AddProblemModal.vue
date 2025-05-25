@@ -171,12 +171,12 @@ const latitude = ref(props.marker ? props.marker.getLatLng().lat : '')
 const longitude = ref(props.marker ? props.marker.getLatLng().lng : '')
 
 const availableCategories = ref([
-  'Schlagloch',
-  'Ampel defekt',
-  'Baustelle',
-  'Fahrradweg blockiert',
-  'Unklare Verkehrsführung',
-  'Fehlendes Straßenschild',
+  'risikoreiche Verkehrsführung, z.B. zu scharfe Kurven, kein oder kein durchgehender Radweg, fehlende Bordsteinabsenkung',
+  'mangelhafte Markierung',
+  'mangelhafte Beschilderung',
+  'unvorteilhafte Ampelintervalle',
+  'unfallträchtiger Straßenbelag',
+  'fehlende oder schlechte Abstellmöglichkeit',
 ])
 const newCategory = ref('')
 

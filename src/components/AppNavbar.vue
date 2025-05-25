@@ -33,18 +33,29 @@
         <router-link to="/" class="hover:underline" @click="handleShowMap" v-else
           >Kartenansicht</router-link
         >
-        <button class="hover:underline text-left" @click="handleOverCardClick">
+        <!-- <button class="hover:underline text-left" @click="handleOverCardClick">
           Über die Karte
-        </button>
+        </button> -->
         <button
           v-if="isAuthenticated"
           class="hover:underline text-left"
           @click="handleShowIntroductionClick"
         >
-          Problem-Melden Anleitung (Zusätzlich "+" drücken)
+          Anleitung Problem-Melden (beim nächsten Melden)
         </button>
-        <router-link to="/datenschutz" class="hover:underline" @click="closeMenu"
-          >Datenschutzerklärung</router-link
+        <a
+          href="https://mannheim.xn--mngelmelder-l8a.de/#pageid=1"
+          target="_blank"
+          class="hover:underline"
+          @click="closeMenu"
+          >Mängel-Melder der Stadt Mannheim</a
+        >
+        <a
+          href="https://www.big-lindenhof.de/datenschutz"
+          target="_blank"
+          class="hover:underline"
+          @click="closeMenu"
+          >Datenschutz</a
         >
         <a
           href="https://www.big-lindenhof.de"
@@ -104,16 +115,16 @@ const handleTitleClick = () => {
   router.push('/')
 }
 
-const handleOverCardClick = () => {
-  appConfigStore.setShowInfoTextAtStart()
-  closeMenu()
-  if (route.name === 'home') {
-    appConfigStore.setShowMapDefault()
-    window.location.reload()
-  } else {
-    router.push('/')
-  }
-}
+// const handleOverCardClick = () => {
+//   appConfigStore.setShowInfoTextAtStart()
+//   closeMenu()
+//   if (route.name === 'home') {
+//     appConfigStore.setShowMapDefault()
+//     window.location.reload()
+//   } else {
+//     router.push('/')
+//   }
+// }
 
 const handleShowIntroductionClick = () => {
   appConfigStore.setShowInfoTextAddProblem()
