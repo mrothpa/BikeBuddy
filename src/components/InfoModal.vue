@@ -57,13 +57,13 @@ vorzuschlagen.
 Ob schlechte oder risikoreiche Verkehrsführung wie z.B. fehlende Bordsteinabsenkung oder
 scharfe Kurven, mangelhafte Markierung oder Beschilderung, unvorteilhafte Ampelintervalle, oder
 unfallträchtiger Straßenbelag - alle diese Aspekte können Sie im Stadtplan Lindenhof markieren
-und melden. Auch Probleme mit Abstellmöglichkeit für Fahrräder können gemeldet werden.
+und melden. Auch Probleme zur Abstellmöglichkeit für Fahrräder können gemeldet werden.
 
 Mit Ihren Hinweisen und auch durch die Bestätigung der Meldungen anderer wird der besondere
 Handlungsbedarf deutlich, den wir an die Stadtverwaltung weitergeben.
 
 Akute Mängel melden Sie bitte nach wie vor im Mängelmelder der Stadt Mannheim. Den Link
-dazu finden Sie im Burger-Menu mit den drei Striche.
+dazu finden Sie im Burger-Menu mit den drei Strichen.
 
 Mit der Einführung dieser Web-App möchten wir einen Beitrag zu einem verbesserten
 Fahrradverkehr in unserem Stadteil leisten. Lassen Sie uns gemeinsam dafür sorgen, dass der

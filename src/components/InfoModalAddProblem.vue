@@ -1,7 +1,7 @@
 <template>
   <div class="absolute inset-0 bg-black/30 z-50 flex items-center justify-center">
     <div class="bg-white p-6 rounded-lg shadow-lg relative w-full max-w-md mx-4 overflow-hidden">
-      <h2 class="text-xl font-bold mb-4 text-regal-blue-900">Neues Problem Anlegen (Anleitung)</h2>
+      <h2 class="text-xl font-bold mb-4 text-regal-blue-900">Neues Problem Melden (Anleitung)</h2>
       <div class="mb-4 overflow-y-auto max-h-96">
         <p class="text-gray-700 leading-relaxed whitespace-pre-line">
           {{ infoTextContent }}
@@ -50,7 +50,7 @@ const infoTextContent = ref(`Hallo! Schön, dass du ein neues Problem melden mö
 
 Wenn der angezeigte Standort auf der Karte nicht exakt dem Ort des Problems entspricht, kannst du den Marker ziehen und präzise auf die richtige Stelle platzieren.
 
-Um deine Meldung abzuschicken, drücke bitte auf den blauen Haken unten rechts und fülle anschließend das Formular mit den Details zu deinem Problem aus.
+Um deine Meldung abzuschicken, verschiebe ggf. den Marker und klicke auf „Marker ggf. verschieben und bestätigen“. Fülle danach das Formular aus.
 
 Hinweis zum Standort: Falls der Standort trotz deiner Freigabe nicht korrekt ist, könnte das folgende Ursachen haben:
 

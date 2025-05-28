@@ -46,7 +46,7 @@
     @click="toggleAddProblem"
     class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-75 rounded-full shadow-lg py-2 px-4 text-gray-800 font-semibold"
   >
-    Problem melden über "+"
+    Problem melden
   </div>
   <div
     v-else

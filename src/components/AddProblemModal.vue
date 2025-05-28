@@ -171,7 +171,7 @@ const latitude = ref(props.marker ? props.marker.getLatLng().lat : '')
 const longitude = ref(props.marker ? props.marker.getLatLng().lng : '')
 
 const availableCategories = ref([
-  'risikoreiche Verkehrsführung, z.B. zu scharfe Kurven, kein oder kein durchgehender Radweg, fehlende Bordsteinabsenkung',
+  'risikoreiche Verkehrsführung, z.B. zu scharfe Kurven, fehlende Bordsteinabsenkung',
   'mangelhafte Markierung',
   'mangelhafte Beschilderung',
   'unvorteilhafte Ampelintervalle',
@@ -251,7 +251,7 @@ const validateForm = () => {
   }
 
   // 2. Länge prüfen
-  else if (form.value.category.length >= 64) {
+  else if (form.value.category.length >= 128) {
     categoryError.value = 'Kategorie zu lang.'
   }
 
