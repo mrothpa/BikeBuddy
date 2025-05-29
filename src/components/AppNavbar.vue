@@ -1,8 +1,9 @@
 <template>
   <nav class="bg-white sticky top-0 z-50 shadow-md w-full">
     <div class="max-w-screen-xl mx-auto px-4 py-3 flex justify-between items-center">
-      <button @click="handleTitleClick" class="cursor-pointer">
-        <h1 class="text-regal-blue-900 text-xl md:text-2xl font-bold">BikeBuddy BiG Lindenhof</h1>
+      <button @click="handleTitleClick" class="cursor-pointer flex items-center space-x-2">
+        <span class="text-regal-blue-900 text-xl md:text-2xl font-bold">BikeBuddy</span>
+        <img src="/src/assets/images/BIG_Logo_blau.svg" alt="BIG Lindenhof Logo" class="h-8 md:h-10" />
       </button>
 
       <!-- buttons -->

@@ -5,9 +5,16 @@
         Willkommen bei BikeBuddy BiG Lindenhof!
       </h2>
       <div class="mb-4 overflow-y-auto max-h-96">
-        <p class="text-gray-700 leading-relaxed whitespace-pre-line">
-          {{ infoTextContent }}
-        </p>
+        <div>
+          <p class="text-gray-700 leading-relaxed whitespace-pre-line">
+            {{ infoTextContent }}
+          </p>
+          <img
+            src="/src/assets/images/BIG_Logo_blau.svg"
+            alt="BIG Lindenhof Logo"
+            class="h-12 md:h-16"
+          />
+        </div>
       </div>
 
       <div class="mb-4 flex items-center">
