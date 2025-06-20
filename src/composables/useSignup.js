@@ -33,11 +33,13 @@ export default function useSignup() {
       }
 
       signupSuccess.value = true
-      // Hier erfolgt KEINE Speicherung eines Tokens oder Weiterleitung.
-      // Das übernimmt der anschließende Login-Prozess.
     } catch (e) {
-      error.value = e.message || 'Ein unbekannter Fehler ist aufgetreten.'
-      console.error('Fehler bei der Registrierung:', e)
+      if (e.message.includes('Unexpected token \'<\', "<!DOCTYPE "')) {
+        error.value = 'Die E-Mail-Adresse ist bereits registriert.'
+      } else {
+        error.value = e.message || 'Ein unbekannter Fehler ist aufgetreten.'
+      }
+      // console.error('Fehler bei der Registrierung:', e)
     } finally {
       loading.value = false
     }
