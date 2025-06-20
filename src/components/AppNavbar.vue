@@ -3,7 +3,11 @@
     <div class="max-w-screen-xl mx-auto px-4 py-3 flex justify-between items-center">
       <button @click="handleTitleClick" class="cursor-pointer flex items-center space-x-2">
         <span class="text-regal-blue-900 text-xl md:text-2xl font-bold">BikeBuddy</span>
-        <img src="/src/assets/images/BIG_Logo_blau.svg" alt="BIG Lindenhof Logo" class="h-8 md:h-10" />
+        <img
+          src="/src/assets/images/BIG_Logo_blau.svg"
+          alt="BIG Lindenhof Logo"
+          class="h-8 md:h-10"
+        />
       </button>
 
       <!-- buttons -->
@@ -34,9 +38,9 @@
         <router-link to="/" class="hover:underline" @click="handleShowMap" v-else
           >Kartenansicht</router-link
         >
-        <!-- <button class="hover:underline text-left" @click="handleOverCardClick">
-          Über die Karte
-        </button> -->
+        <button class="hover:underline text-left" @click="handleOverCardClick">
+          Über den BikeBuddy
+        </button>
         <button
           v-if="isAuthenticated"
           class="hover:underline text-left"
@@ -116,16 +120,16 @@ const handleTitleClick = () => {
   router.push('/')
 }
 
-// const handleOverCardClick = () => {
-//   appConfigStore.setShowInfoTextAtStart()
-//   closeMenu()
-//   if (route.name === 'home') {
-//     appConfigStore.setShowMapDefault()
-//     window.location.reload()
-//   } else {
-//     router.push('/')
-//   }
-// }
+const handleOverCardClick = () => {
+  appConfigStore.setShowInfoTextAtStart()
+  closeMenu()
+  if (route.name === 'home') {
+    appConfigStore.setShowMapDefault()
+    window.location.reload()
+  } else {
+    router.push('/')
+  }
+}
 
 const handleShowIntroductionClick = () => {
   appConfigStore.setShowInfoTextAddProblem()

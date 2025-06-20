@@ -40,7 +40,7 @@ export default function useLogin() {
       // console.log('Login-Data: ', data)
       appConfigStore.setPasetoToken(data.token)
       appConfigStore.setUserRole(data.role)
-      appConfigStore.setShowInfoTextAtStart() // hier auskommentieren, wenn Funktion nicht benötigt wird
+      // appConfigStore.setShowInfoTextAtStart() // hier auskommentieren, wenn Funktion nicht benötigt wird
       await router.push('/') // Weiterleitung zur Homepage
     } catch (e) {
       error.value = e.message || 'Ein unbekannter Fehler ist aufgetreten.'
