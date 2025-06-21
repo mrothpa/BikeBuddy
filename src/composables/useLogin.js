@@ -43,8 +43,12 @@ export default function useLogin() {
       // appConfigStore.setShowInfoTextAtStart() // hier auskommentieren, wenn Funktion nicht benötigt wird
       await router.push('/') // Weiterleitung zur Homepage
     } catch (e) {
-      error.value = e.message || 'Ein unbekannter Fehler ist aufgetreten.'
-      console.error('Fehler beim Login:', e)
+      if (e.message.includes('Anmeldefehler: 401')) {
+        error.value = 'E-Mail oder Passwort ist falsch.'
+      } else {
+        error.value = e.message || 'Ein unbekannter Fehler ist aufgetreten.'
+      }
+      // console.error('Fehler beim Login:', e)
     } finally {
       loading.value = false
     }
