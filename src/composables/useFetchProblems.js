@@ -41,9 +41,10 @@ export default function useFetchProblems() {
           user: problem.user,
           latitude: problem.latitude,
           longitude: problem.longitude,
-          title: problem.title,
+          // title: problem.title, // title
           status: problem.status,
           category: problem.category,
+          description: problem.description,
         }))
       } else {
         problems.value = data.map((problem) => ({
