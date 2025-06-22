@@ -177,6 +177,9 @@ import useDeleteProblem from '@/composables/useDeleteProblem'
 import useUpdateProblemStatus from '@/composables/useUpdateProblemStatus'
 import ProblemFilterModal from '@/components/ProblemFilterModal.vue'
 import useDownloadData from '@/composables/useDownloadData'
+import useAddSolutionsDescription from '@/composables/useAddSolutionsDescription'
+
+const { addSolutionsToProblems } = useAddSolutionsDescription()
 
 const { problems, error, loading, fetchProblems } = useFetchProblems()
 const { isDownloading, downloadError, downloadCsv } = useDownloadData()
@@ -322,8 +325,10 @@ const handleChangeStatus = async (newStatus) => {
   }
 }
 
-const handleDownload = () => {
-  downloadCsv(sortedProblems.value, 'radweg_meldungen.csv')
+const handleDownload = async () => {
+  const dataToDownload = await addSolutionsToProblems(sortedProblems.value)
+  // console.log(dataToDownload)
+  downloadCsv(dataToDownload, 'radweg_meldungen.csv')
 }
 </script>
 

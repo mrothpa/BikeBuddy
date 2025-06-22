@@ -32,18 +32,22 @@ export default function useFetchProblemDetails(problemId) {
     }
   }
 
-  const fetchSolutions = async () => {
+  const fetchSolutions = async (id = null) => {
+    const currentProblemId = id || problemId
     loadingSolutions.value = true
     error.value = null
     solutions.value = []
 
     try {
-      const response = await fetch(`${appConfigStore.getBackendUrl}problems/${problemId}/solutions`)
+      const response = await fetch(
+        `${appConfigStore.getBackendUrl}problems/${currentProblemId}/solutions`,
+      )
       if (!response.ok) {
         const errorData = await response.json()
         throw new Error(errorData.message || `Fehler beim Laden der Lösungen: ${response.status}`)
       }
       solutions.value = await response.json()
+      return solutions.value // Optional: Rückgabe der Lösungen, falls benötigt
     } catch (err) {
       error.value = err.message
       console.error('Fehler beim Laden der Lösungen:', err)
