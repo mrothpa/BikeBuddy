@@ -44,7 +44,7 @@ async function handleResponse(response) {
           const textError = await response.text()
           errorMessage += ` - ${textError}`
         } catch (textErrorError) {
-          errorMessage += ' - Konnte Fehlerdetails nicht lesen.'
+          errorMessage += ' - Session abgelaufen. Bitte neu anmelden.'
         }
       }
       throw new Error(errorMessage)
