@@ -27,6 +27,14 @@
             required
           />
         </div>
+        <div class="mb-4">
+          <router-link
+            to="/forgot-password"
+            class="text-sm text-regal-blue-700 hover:text-regal-blue-900 focus:outline-none focus:shadow-outline"
+          >
+            Passwort vergessen?
+          </router-link>
+        </div>
         <div class="flex items-center justify-between">
           <button
             :disabled="loading"
