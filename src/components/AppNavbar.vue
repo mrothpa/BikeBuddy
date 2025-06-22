@@ -38,6 +38,13 @@
         <router-link to="/" class="hover:underline" @click="handleShowMap" v-else
           >Kartenansicht</router-link
         >
+
+        <router-link
+          to="/users"
+          class="hover:underline"
+          v-if="isAuthenticated && user_role === 'admin'"
+          >Benutzerverwaltung</router-link
+        >
         <button class="hover:underline text-left" @click="handleOverCardClick">
           Über den BikeBuddy
         </button>
@@ -87,7 +94,7 @@ const isOpen = ref(false)
 const router = useRouter()
 const route = useRoute()
 const appConfigStore = useAppConfigStore()
-const { isAuthenticated, showMap } = storeToRefs(appConfigStore)
+const { isAuthenticated, showMap, user_role } = storeToRefs(appConfigStore)
 
 const toggleMenu = () => {
   isOpen.value = !isOpen.value
