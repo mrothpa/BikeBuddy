@@ -102,7 +102,9 @@
             <td
               class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center hover:underline cursor-pointer"
             >
-              <a :href="`mailto:${problem.user.email}`">{{ problem.user.email }}</a>
+              <a :href="`mailto:${cleanEmail(problem.user.email)}`">{{
+                cleanEmail(problem.user.email)
+              }}</a>
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
               {{ formatDate(problem.created_at) }}
@@ -329,6 +331,11 @@ const handleDownload = async () => {
   const dataToDownload = await addSolutionsToProblems(sortedProblems.value)
   // console.log(dataToDownload)
   downloadCsv(dataToDownload, 'radweg_meldungen.csv')
+}
+
+const cleanEmail = (email) => {
+  if (!email) return ''
+  return email.replace(/\+.{6}(?=@)/, '')
 }
 </script>
 
