@@ -46,27 +46,50 @@
       </table>
     </div>
     <div v-else-if="!loadingUsers && !usersError">Keine Benutzer vorhanden.</div>
+    <div v-if="isDeleting" class="text-blue-500 mt-2">Lösche Benutzer...</div>
+    <div v-if="deleteError" class="text-red-500 mt-2">Fehler beim Löschen: {{ deleteError }}</div>
+    <div v-if="deleteSuccess" class="text-green-500 mt-2">Benutzer erfolgreich gelöscht!</div>
   </div>
 </template>
 
 <script setup>
 import { onMounted } from 'vue'
-import useFetchUsers from '@/composables/useFetchUsers' // Stelle sicher, dass der Pfad korrekt ist
+import useFetchUsers from '@/composables/useFetchUsers'
+import useDeleteUser from '@/composables/useDeleteUser' // NEU: Importiere das Löschen-Composable
 
 const { users, loadingUsers, usersError, fetchUsers } = useFetchUsers()
+const { isDeleting, deleteError, deleteSuccess, deleteUserById } = useDeleteUser() // NEU: Instanziiere das Löschen-Composable
 
 onMounted(async () => {
   await fetchUsers()
 })
 
-const deleteUser = (userId, userRole) => {
-  if (userRole === 'admin') {
+const deleteUser = async (userId, userRole) => {
+  // Mach die Funktion async
+  if (userRole === 'Admin') {
     console.log(`Versuch, Admin-User ${userId} zu löschen wurde blockiert.`)
+    // Optional: Zeige eine Benachrichtigung im UI an
     return
   }
-  console.log(`Löschen-Button für User-ID: ${userId} gedrückt.`)
-  // Hier würde später die eigentliche Löschlogik stehen,
-  // z.B. Aufruf eines Composables zum Löschen eines Users
+
+  // Bestätigungsdialog (optional, aber dringend empfohlen für Löschoperationen)
+  if (!confirm(`Soll der Benutzer mit der ID ${userId} wirklich gelöscht werden?`)) {
+    return // Abbruch, wenn Benutzer nicht bestätigt
+  }
+
+  console.log(`Löschen-Button für User-ID: ${userId} gedrückt. Versuche zu löschen...`)
+
+  const success = await deleteUserById(userId) // Rufe die Löschfunktion auf
+
+  if (success) {
+    console.log(`Benutzer ${userId} erfolgreich gelöscht.`)
+    // Aktualisiere die Liste, indem du alle Benutzer neu abrufst
+    await fetchUsers()
+    // Optional: Eine Erfolgsmeldung anzeigen, z.B. Toast-Nachricht
+  } else {
+    console.error(`Löschen des Benutzers ${userId} fehlgeschlagen:`, deleteError.value)
+    // Optional: Eine Fehlermeldung anzeigen
+  }
 }
 </script>
 
