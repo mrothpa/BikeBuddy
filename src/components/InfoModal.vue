@@ -61,10 +61,10 @@ wir möchten Ihnen die App "BikeBuddy BiG Lindenhof" vorstellen und mit ihr die 
 geben, Probleme an unseren öffentlichen Radwegen zu melden und Verbesserungen
 vorzuschlagen.
 
-Ob schlechte oder risikoreiche Verkehrsführung wie z.B. fehlende Bordsteinabsenkung oder
-scharfe Kurven, mangelhafte Markierung oder Beschilderung, unvorteilhafte Ampelintervalle, oder
-unfallträchtiger Straßenbelag - alle diese Aspekte können Sie im Stadtplan Lindenhof markieren
-und melden. Auch Probleme zur Abstellmöglichkeit für Fahrräder können gemeldet werden.
+Das ist die richtige Version: Ob schlechte oder risikoreiche Verkehrsführung wie z.B. 
+fehlende Bordsteinabsenkung oder scharfe Kurven, mangelhafte Markierung oder Beschilderung 
+oder unvorteilhafte Ampelintervalle - diese Aspekte können Sie im Stadtplan Lindenhof 
+markieren und melden. Auch Probleme zur Abstellmöglichkeit für Fahrräder können gemeldet werden.
 
 Mit Ihren Hinweisen und auch durch die Bestätigung der Meldungen anderer wird der besondere
 Handlungsbedarf deutlich, den wir an die Stadtverwaltung weitergeben.

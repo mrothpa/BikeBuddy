@@ -31,10 +31,10 @@
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
               <button
                 @click="deleteUser(user.id, user.role)"
-                :disabled="user.role === 'Admin'"
+                :disabled="user.role === 'admin'"
                 :class="{
-                  'bg-red-500 hover:bg-red-700 text-white': user.role !== 'Admin',
-                  'bg-gray-400 text-gray-700 cursor-not-allowed': user.role === 'Admin',
+                  'bg-red-500 hover:bg-red-700 text-white': user.role !== 'admin',
+                  'bg-gray-400 text-gray-700 cursor-not-allowed': user.role === 'admin',
                 }"
                 class="font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               >
@@ -66,8 +66,8 @@ onMounted(async () => {
 
 const deleteUser = async (userId, userRole) => {
   // Mach die Funktion async
-  if (userRole === 'Admin') {
-    console.log(`Versuch, Admin-User ${userId} zu löschen wurde blockiert.`)
+  if (userRole === 'admin') {
+    console.log(`Versuch, admin-User ${userId} zu löschen wurde blockiert.`)
     // Optional: Zeige eine Benachrichtigung im UI an
     return
   }
