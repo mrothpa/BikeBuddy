@@ -1,13 +1,21 @@
 <template>
   <div class="m-6">
-    <h2 class="text-2xl font-bold mb-4 text-regal-blue-900">Benutzerverwaltung</h2>
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-2xl font-bold mb-4 text-regal-blue-900">Benutzerverwaltung</h2>
+      <button
+        @click="toggleUserFilter"
+        class="bg-regal-blue-900 text-white rounded-full px-4 py-2 shadow-md hover:bg-regal-blue-700 focus:outline-none focus:ring-2 focus:ring-regal-blue-500 cursor-pointer mr-4"
+      >
+        {{ showActiveUsersOnly ? 'Alle Benutzer anzeigen' : 'Nur aktive Benutzer anzeigen' }}
+      </button>
+    </div>
 
     <div v-if="loadingUsers" class="mb-4">Lade Benutzerdaten...</div>
     <div v-if="usersError" class="text-red-500 mb-4">
       Fehler beim Laden der Benutzer: {{ usersError }}
     </div>
 
-    <div v-if="users.length > 0" class="overflow-x-auto">
+    <div v-if="filteredUsers.length > 0" class="overflow-x-auto">
       <table class="min-w-full leading-normal shadow-md rounded-lg">
         <thead class="bg-gray-100">
           <tr>
@@ -15,6 +23,9 @@
               class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
             >
               E-Mail
+              <span class="text-sm text-gray-500 ml-2"
+                >({{ showActiveUsersOnly ? 'aktive ' : '' }}{{ filteredUsers.length }} Nutzer)</span
+              >
             </th>
             <th
               class="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
@@ -24,7 +35,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in users" :key="user.id">
+          <tr v-for="user in filteredUsers" :key="user.id">
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
               {{ user.email }}
             </td>
@@ -53,15 +64,27 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import useFetchUsers from '@/composables/useFetchUsers'
 import useDeleteUser from '@/composables/useDeleteUser' // NEU: Importiere das Löschen-Composable
 
 const { users, loadingUsers, usersError, fetchUsers } = useFetchUsers()
 const { isDeleting, deleteError, deleteSuccess, deleteUserById } = useDeleteUser() // NEU: Instanziiere das Löschen-Composable
 
+const showActiveUsersOnly = ref(false)
+
 onMounted(async () => {
   await fetchUsers()
+})
+
+const toggleUserFilter = () => {
+  showActiveUsersOnly.value = !showActiveUsersOnly.value
+}
+
+const filteredUsers = computed(() => {
+  return showActiveUsersOnly.value
+    ? users.value.filter((user) => !user.email.includes('+'))
+    : users.value
 })
 
 const deleteUser = async (userId, userRole) => {
