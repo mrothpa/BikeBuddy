@@ -58,7 +58,7 @@ export default function useFetchProblems() {
         }))
       }
     } catch (e) {
-      error.value = e
+      error.value = e + '(Bitte neu anmelden und erneut versuchen.)'
       console.error('Fehler beim Abrufen der Probleme:', e)
     } finally {
       loading.value = false
