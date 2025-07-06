@@ -13,7 +13,9 @@
     >
       <font-awesome-icon icon="download" size="lg" />
     </button>
-    <h1 class="text-2xl font-bold mb-4 text-regal-blue-900">Übersicht der Meldungen</h1>
+    <h1 class="text-2xl font-bold mb-4 text-regal-blue-900">
+      Übersicht der Meldungen ({{ sortedProblems.length }})
+    </h1>
 
     <div v-if="loading" class="mb-4">Lade Meldungen...</div>
     <div v-if="error" class="text-red-500 mb-4">Fehler beim Laden der Meldungen: {{ error }}</div>
