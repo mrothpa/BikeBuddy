@@ -19,7 +19,7 @@
         </div>
         <div class="flex items-center justify-between">
           <a
-            :href="`mailto:info@big-lindenhof.de?subject=Passwort vergessen ${email}&body=Hallo,%0D%0Aich habe mein Passwort vergessen und benötige Hilfe bei der Erstellung meines neuen Kontos.%0D%0ABitte löscht mein altes Konto, damit ich ein neues anlegen kann.%0D%0AMeine E-Mail-Adresse lautet: ${email}%0D%0AVielen Dank!`"
+            :href="`mailto:bikebuddy@big-lindenhof.de?subject=Passwort vergessen ${email}&body=Hallo,%0D%0Aich habe mein Passwort vergessen und benötige Hilfe bei der Erstellung meines neuen Kontos.%0D%0ABitte löscht mein altes Konto, damit ich ein neues anlegen kann.%0D%0AMeine E-Mail-Adresse lautet: ${email}%0D%0AVielen Dank!`"
             :class="[
               'bg-regal-blue-900 hover:bg-regal-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline',
               email === '' ? 'opacity-50 cursor-not-allowed pointer-events-none' : 'cursor-pointer',
