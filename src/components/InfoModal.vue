@@ -57,7 +57,7 @@ const closeModal = () => {
 
 const infoTextContent = ref(`Liebe Lindenhöfer der Stadt Mannheim,
 
-wir möchten Ihnen die App "BikeBuddy BiG Lindenhof" vorstellen, die es Ihnen ermöglicht, Probleme an unseren öffentlichen Radwegen zu melden und Verbesserungen vorzuschlagen.
+wir möchten Ihnen die App "BikeBuddy BIG Lindenhof" vorstellen, die es Ihnen ermöglicht, Probleme an unseren öffentlichen Radwegen zu melden und Verbesserungen vorzuschlagen.
 
 Sie können Aspekte wie risikoreiche Verkehrsführung, fehlende Bordsteinabsenkung, mangelhafte Markierung oder unvorteilhafte Ampelintervalle im Stadtplan Lindenhof markieren. Auch Probleme zur Abstellmöglichkeit für Fahrräder können gemeldet werden.
 
@@ -65,7 +65,7 @@ Ihre Hinweise und die Bestätigung anderer Meldungen helfen uns, den besonderen 
 
 Akute Mängel melden Sie bitte nach wie vor im Mängelmelder der Stadt Mannheim. Den Link dazu finden Sie im Burger-Menu.
 
-Mit dieser Web-App möchten wir einen Beitrag zu einem verbesserten Fahrradverkehr in unserem Stadteil leisten. Lassen Sie uns gemeinsam den Lindenhof zu einem noch besseren Ort für Radfahrer machen.
+Mit dieser Web-App möchten wir einen Beitrag zu einem verbesserten Fahrradverkehr in unserem Stadtteil leisten. Lassen Sie uns gemeinsam den Lindenhof zu einem noch besseren Ort für Radfahrer machen.
 
 Bitte registrieren Sie sich, um die App zu nutzen.
 
