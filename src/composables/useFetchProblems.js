@@ -45,6 +45,7 @@ export default function useFetchProblems() {
           status: problem.status,
           category: problem.category,
           description: problem.description,
+          upvotes_int: problem.upvotes_int || 0,
         }))
       } else {
         problems.value = data.map((problem) => ({
@@ -55,6 +56,7 @@ export default function useFetchProblems() {
           status: problem.status,
           category: problem.category,
           created_at: problem.created_at,
+          upvotes_int: problem.upvotes_int,
         }))
       }
     } catch (e) {
