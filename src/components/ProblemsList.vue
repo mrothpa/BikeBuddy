@@ -73,7 +73,15 @@
               </button>
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
-              ({{ problem.latitude.toFixed(5) }}, {{ problem.longitude.toFixed(5) }})
+              <a
+                class="text-regal-blue-500 hover:text-regal-blue-700 underline"
+                :href="`https://www.openstreetmap.org/?mlat=${problem.latitude}&mlon=${problem.longitude}#map=18/${problem.latitude}/${problem.longitude}`"
+                target="_blank"
+                rel="noopener"
+                :title="`In OpenStreetMap öffnen: (${problem.latitude.toFixed(5)}, ${problem.longitude.toFixed(5)})`"
+              >
+                ({{ problem.latitude.toFixed(5) }}, {{ problem.longitude.toFixed(5) }})
+              </a>
             </td>
             <!-- <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
               {{ problem.category || '-' }}
