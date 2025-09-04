@@ -351,6 +351,7 @@ const handleChangeStatus = async (newStatus) => {
 }
 
 const handleDownload = async () => {
+  console.log('Download gestartet...')
   const dataToDownload = await addSolutionsToProblems(sortedProblems.value)
   // console.log(dataToDownload)
   downloadCsv(dataToDownload, 'radweg_meldungen.csv')

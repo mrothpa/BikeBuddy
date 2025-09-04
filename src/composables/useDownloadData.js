@@ -20,7 +20,7 @@ export default function useDownloadData() {
     return result
   }
 
-  const downloadCsv = (data, filename = 'daten.csv') => {
+  const downloadCsv = async (data, filename = 'daten.csv') => {
     if (!Array.isArray(data) || data.length === 0) {
       console.warn('Keine Daten zum Herunterladen vorhanden.')
       return
@@ -29,25 +29,77 @@ export default function useDownloadData() {
     isDownloading.value = true
     downloadError.value = null
 
+    // Hilfsfunktion für Reverse Geocoding
+    async function fetchAddress(lat, lon) {
+      const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2`
+      try {
+        const response = await fetch(url, {
+          headers: {
+            'User-Agent': 'BikeBuddy/1.0 (kontakt@example.com)', // Bitte ggf. anpassen
+            'Accept-Language': 'de',
+          },
+        })
+        if (!response.ok) throw new Error('API-Fehler')
+        const json = await response.json()
+        return {
+          address: json.display_name || 'Keine Adresse in der Nähe',
+          road: json.address && json.address.road ? json.address.road : 'Keine Adresse in der Nähe',
+        }
+      } catch (e) {
+        console.error('Fehler beim Abrufen der Adresse:', e)
+        return {
+          address: 'Keine Adresse in der Nähe',
+          road: 'Keine Adresse in der Nähe',
+        }
+      }
+    }
+
     try {
+      // Für jeden Punkt Adresse abfragen (synchron)
+      const dataWithAddress = []
+      for (const item of data) {
+        let lat = item.latitude || item.lat
+        let lon = item.longitude || item.lon
+        let addressInfo = {
+          address: 'Keine Adresse in der Nähe',
+          road: 'Keine Adresse in der Nähe',
+        }
+        let osm_link = 'Kein Link verfügbar'
+        if (lat && lon) {
+          addressInfo = await fetchAddress(lat, lon)
+          osm_link = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=18/${lat}/${lon}`
+        }
+        dataWithAddress.push({
+          ...item,
+          address: addressInfo.address,
+          road: addressInfo.road,
+          osm_link,
+        })
+      }
+
       // Flatten each object in the array
-      const flattenedData = data.map((item) => flattenObject(item))
+      const flattenedData = dataWithAddress.map((item) => flattenObject(item))
 
       if (flattenedData.length === 0) {
         isDownloading.value = false
         return
       }
 
-      const headers = Object.keys(flattenedData[0])
-        .map((header) => `"${header.replace(/"/g, '""')}"`) // Escape double quotes in headers
+      // Füge die neuen Spalten hinzu, falls sie nicht existieren
+      const allHeaders = new Set()
+      flattenedData.forEach((obj) => Object.keys(obj).forEach((key) => allHeaders.add(key)))
+      const headers = Array.from(allHeaders)
+        .map((header) => `"${header.replace(/"/g, '""')}"`)
         .join(',')
 
       const rows = flattenedData.map((item) =>
-        Object.values(item)
+        headers
+          .replace(/"/g, '') // Entferne die Quotes für die Key-Zugriffe
+          .split(',')
           .map(
-            (value) =>
-              `"${value === null || value === undefined ? '' : String(value).replace(/"/g, '""')}"`,
-          ) // Escape double quotes in values
+            (key) =>
+              `"${item[key] === null || item[key] === undefined ? '' : String(item[key]).replace(/"/g, '""')}"`,
+          )
           .join(','),
       )
 
