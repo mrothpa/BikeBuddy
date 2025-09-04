@@ -1,8 +1,23 @@
 <template>
   <div class="m-6 relative">
+    <!-- Overlay, das alle Interaktionen blockiert -->
+    <div
+      v-if="isDownloading"
+      class="fixed inset-0 z-50 bg-black bg-opacity-30 flex items-center justify-center"
+    >
+      <div class="bg-white rounded-lg shadow-lg p-8 flex flex-col items-center">
+        <font-awesome-icon
+          icon="download"
+          size="2x"
+          class="mb-4 text-regal-blue-900 animate-bounce"
+        />
+        <p class="text-lg font-semibold text-regal-blue-900">Daten werden heruntergeladen...</p>
+      </div>
+    </div>
     <button
       class="absolute right-2 bg-regal-blue-900 text-white rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-regal-blue-700 focus:outline-none focus:ring-2 focus:ring-regal-blue-500 cursor-pointer"
       @click="openFilterModal"
+      :disabled="isDownloading"
     >
       <font-awesome-icon icon="filter" size="lg" />
     </button>
@@ -95,6 +110,7 @@
               <button
                 @click="openProblemDetails(problem.id)"
                 class="text-regal-blue-500 hover:text-regal-blue-700 font-semibold hover:underline cursor-pointer"
+                :disabled="isDownloading"
               >
                 {{ problem.category }}
               </button>
@@ -115,7 +131,7 @@
             </td> -->
             <td
               class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center hover:underline cursor-pointer"
-              @click="triggerChangeStatus(problem.id)"
+              @click="isDownloading ? null : triggerChangeStatus(problem.id)"
             >
               {{ problem.status || '-' }}
             </td>
@@ -134,7 +150,7 @@
             </td>
             <td
               class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right text-regal-blue-500 hover:text-regal-blue-700 cursor-pointer"
-              @click="triggerDeleteConfirmation(problem.id)"
+              @click="isDownloading ? null : triggerDeleteConfirmation(problem.id)"
             >
               Löschen
             </td>
@@ -145,17 +161,17 @@
     <div v-else-if="!loading && !error">Keine Meldungen vorhanden.</div>
 
     <div
-      v-if="showDetails"
+      v-if="showDetails && !isDownloading"
       class="absolute inset-0 z-50 flex items-center justify-center bg-black/30"
     >
       <ProblemDetails :problemId="selectedProblemId" @close="closeProblemDetails" />
     </div>
 
-    <div v-if="showDeleteModal">
+    <div v-if="showDeleteModal && !isDownloading">
       <ConfirmDeleteModal @close="closeDeleteModal" @confirm-delete="handleDeleteConfirmed" />
     </div>
 
-    <div v-if="showChangeStatusModal">
+    <div v-if="showChangeStatusModal && !isDownloading">
       <ChangeStatusModal
         @close="closeChangeStatusModal"
         @status-1="handleChangeStatus('status-1')"
@@ -165,7 +181,7 @@
     </div>
 
     <div
-      v-if="showFilterModal"
+      v-if="showFilterModal && !isDownloading"
       class="absolute inset-0 z-50 flex items-center justify-center bg-black/30"
     >
       <ProblemFilterModal
