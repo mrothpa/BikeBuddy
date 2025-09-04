@@ -58,6 +58,16 @@
               <font-awesome-icon v-else :icon="['fas', 'sort']" />
             </th>
             <th
+              class="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
+              @click="sortProblems('upvotes_int')"
+            >
+              Likes
+              <span v-if="sortColumn === 'upvotes_int'">{{
+                sortDirection === 'asc' ? '▲' : '▼'
+              }}</span>
+              <font-awesome-icon v-else :icon="['fas', 'sort']" />
+            </th>
+            <th
               class="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
             >
               E-Mail
@@ -108,6 +118,9 @@
               @click="triggerChangeStatus(problem.id)"
             >
               {{ problem.status || '-' }}
+            </td>
+            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+              {{ problem.upvotes_int ?? 0 }}
             </td>
             <td
               class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center hover:underline cursor-pointer"

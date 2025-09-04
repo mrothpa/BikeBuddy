@@ -51,6 +51,16 @@
               <font-awesome-icon v-else :icon="['fas', 'sort']" />
             </th>
             <th
+              class="px-5 py-3 border-b-2 border-gray-200 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
+              @click="sortProblems('upvotes_int')"
+            >
+              Likes
+              <span v-if="sortColumn === 'upvotes_int'">{{
+                sortDirection === 'asc' ? '▲' : '▼'
+              }}</span>
+              <font-awesome-icon v-else :icon="['fas', 'sort']" />
+            </th>
+            <th
               class="px-5 py-3 border-b-2 border-gray-200 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer"
               @click="sortProblems('created_at')"
             >
@@ -88,6 +98,9 @@
             </td> -- title -->
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
               {{ problem.status || '-' }}
+            </td>
+            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+              {{ problem.upvotes_int ?? 0 }}
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right">
               {{ formatDate(problem.created_at) }}
@@ -139,6 +152,7 @@ onMounted(async () => {
   await fetchProblems()
   // console.log('Fetching problems...')
   displayedProblems.value = [...problems.value]
+  console.log('Fetched problems:', problems.value)
 })
 
 const formatDate = (dateTimeString) => {
